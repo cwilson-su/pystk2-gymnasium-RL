@@ -7,6 +7,12 @@
 
 import gymnasium as gym
 from pystk2_gymnasium import AgentSpec
+import csv
+
+with open("test0_0_results.csv", "w", newline="") as file:
+    writer = csv.writer(file, delimiter=";")
+    writer.writerow(["Step", "Reward", "Terminated", "Truncated"])
+
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
@@ -24,7 +30,13 @@ if __name__ == '__main__':
       ix += 1
       action = env.action_space.sample()
       state, reward, terminated, truncated, _ = env.step(action)
-      print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}") #ammended from the gitHub for better understanding
+      #print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}") #ammended from the gitHub for better understanding
+      
+      with open("test0_0_results.csv", "a", newline="") as file:
+        writer = csv.writer(file, delimiter=";")
+        writer.writerow([ix, reward, terminated, truncated])
+
+      
       done = truncated or terminated
 
   # Important to stop the STK process

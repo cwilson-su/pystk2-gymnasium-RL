@@ -1,6 +1,12 @@
 import gymnasium as gym
 import numpy as np  # Import NumPy for array handling
 from pystk2_gymnasium import AgentSpec
+import csv
+
+with open("test0_1_results.csv", "w", newline="") as file:
+    writer = csv.writer(file, delimiter=";")
+    writer.writerow(["Step", "Reward", "Terminated", "Truncated"])
+
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
@@ -28,7 +34,12 @@ if __name__ == '__main__':
 
         # Step the environment with the custom action
         state, reward, terminated, truncated, _ = env.step(action)
-        print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}")
+        #print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}")
+        
+        with open("test0_1_results.csv", "a", newline="") as file:
+            writer = csv.writer(file, delimiter=";")
+            writer.writerow([ix, reward, terminated, truncated])
+
         
         # Check if the episode is done
         done = truncated or terminated

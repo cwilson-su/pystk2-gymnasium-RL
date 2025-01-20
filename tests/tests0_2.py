@@ -1,6 +1,12 @@
 import gymnasium as gym
 import numpy as np
 from pystk2_gymnasium import AgentSpec
+import csv
+
+with open("test0_2_results.csv", "w", newline="") as file:
+    writer = csv.writer(file, delimiter=";")
+    writer.writerow(["Agent", "Reward", "Terminated", "Position", "Distance"])
+
 
 if __name__ == '__main__':
     # Define the specifications for 5 agents
@@ -53,10 +59,18 @@ if __name__ == '__main__':
             agent_reward = reward if isinstance(reward, (int, float)) else reward.get(str(i), 0.0)
             is_terminated = terminated.get(str(i), False) if isinstance(terminated, dict) else terminated
             agent_info = info['infos'].get(str(i), {}) if 'infos' in info and isinstance(info['infos'], dict) else {}
-            print(
-                f"Agent {i}: Reward={agent_reward}, "
-                f"Terminated={is_terminated}, Info={agent_info}"
-            )
+            
+            #print(
+            #    f"Agent {i}: Reward={agent_reward}, "
+            #    f"Terminated={is_terminated}, Info={agent_info}"
+            #)
+            
+            with open("test0_2_results.csv", "a", newline="") as file:
+                writer = csv.writer(file, delimiter=";")
+                position = agent_info.get("position", "N/A")  # Default to "N/A" if not found
+                distance = agent_info.get("distance", "N/A")  # Default to "N/A" if not found
+                writer.writerow([i, agent_reward, is_terminated, position, distance])
+
 
         # Check if all agents are done
         done = all(terminated.values()) if isinstance(terminated, dict) else terminated
