@@ -8,7 +8,6 @@
 import gymnasium as gym
 from pystk2_gymnasium import AgentSpec
 
-
 # STK gymnasium uses one process
 if __name__ == '__main__':
   # Use a a flattened version of the observation and action spaces
@@ -25,6 +24,7 @@ if __name__ == '__main__':
       ix += 1
       action = env.action_space.sample()
       state, reward, terminated, truncated, _ = env.step(action)
+      print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}") #ammended from the gitHub for better understanding
       done = truncated or terminated
 
   # Important to stop the STK process
