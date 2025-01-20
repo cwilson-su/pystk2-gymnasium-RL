@@ -1,12 +1,21 @@
 import gymnasium as gym
 import numpy as np  # Import NumPy for array handling
 from pystk2_gymnasium import AgentSpec
+import os
 import csv
 
-with open("test0_1_results.csv", "w", newline="") as file:
+# Set the output folder to the `tests` directory
+output_folder = os.path.join(os.path.dirname(__file__), "tests_csv")
+
+# Ensure the folder exists (it should already exist, but this ensures robustness)
+os.makedirs(output_folder, exist_ok=True)
+
+csv_file = os.path.join(output_folder, "test0_1_results.csv")
+
+# Write column titles (only once at the start of the script)
+with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
     writer.writerow(["Step", "Reward", "Terminated", "Truncated"])
-
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
@@ -36,7 +45,7 @@ if __name__ == '__main__':
         state, reward, terminated, truncated, _ = env.step(action)
         #print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}")
         
-        with open("test0_1_results.csv", "a", newline="") as file:
+        with open(csv_file, "a", newline="") as file:
             writer = csv.writer(file, delimiter=";")
             writer.writerow([ix, reward, terminated, truncated])
 

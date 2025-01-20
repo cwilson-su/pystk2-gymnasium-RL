@@ -1,12 +1,21 @@
 import gymnasium as gym
 import numpy as np
 from pystk2_gymnasium import AgentSpec
+import os
 import csv
 
-with open("test0_2_results.csv", "w", newline="") as file:
+# Set the output folder to the `tests` directory
+output_folder = os.path.join(os.path.dirname(__file__), "tests_csv")
+
+# Ensure the folder exists (it should already exist, but this ensures robustness)
+os.makedirs(output_folder, exist_ok=True)
+
+csv_file = os.path.join(output_folder, "test0_2_results.csv")
+
+# Write column titles (only once at the start of the script)
+with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
     writer.writerow(["Agent", "Reward", "Terminated", "Position", "Distance"])
-
 
 if __name__ == '__main__':
     # Define the specifications for 5 agents
@@ -65,7 +74,7 @@ if __name__ == '__main__':
             #    f"Terminated={is_terminated}, Info={agent_info}"
             #)
             
-            with open("test0_2_results.csv", "a", newline="") as file:
+            with open(csv_file, "a", newline="") as file:
                 writer = csv.writer(file, delimiter=";")
                 position = agent_info.get("position", "N/A")  # Default to "N/A" if not found
                 distance = agent_info.get("distance", "N/A")  # Default to "N/A" if not found
