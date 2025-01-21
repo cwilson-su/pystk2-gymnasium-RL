@@ -23,7 +23,10 @@ if __name__ == '__main__':
     env = gym.make(
         "supertuxkart/flattened-v0",  # Flattened environment
         render_mode="human",         # Enable rendering for visualization
-        agent=AgentSpec(use_ai=False)  # Custom agent with manual actions
+        agent=AgentSpec(use_ai=False),  # Custom agent with manual actions
+        #track="lighthouse"           # Custom track
+        #track="minigolf"
+        track="xr591"
     )
 
     ix = 0
