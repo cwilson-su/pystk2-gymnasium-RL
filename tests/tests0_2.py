@@ -84,7 +84,6 @@ if __name__ == '__main__':
         # Check if all agents are done
         done = all(terminated.values()) if isinstance(terminated, dict) else terminated
 
-    # Stop the STK process to release resources
     env.close()
 
 

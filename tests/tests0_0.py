@@ -21,32 +21,31 @@ csv_file = os.path.join(output_folder, "test0_0_results.csv")
 # Write column titles (only once at the start of the script)
 with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
-    writer.writerow(["Step", "Reward", "Terminated", "Truncated"])
+    writer.writerow(["Step", "Reward", "Terminated", "Truncated", "Position", "Distance"])
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
-  # Use a a flattened version of the observation and action spaces
-  # In both case, this corresponds to a dictionary with two keys:
-  # - `continuous` is a vector corresponding to the continuous observations
-  # - `discrete` is a vector (of integers) corresponding to discrete observations
-  env = gym.make("supertuxkart/flattened-v0", render_mode="human", agent=AgentSpec(use_ai=True))
+    # Use a flattened version of the observation and action spaces
+    env = gym.make("supertuxkart/flattened-v0", render_mode="human", agent=AgentSpec(use_ai=True))
 
-  ix = 0
-  done = False
-  state, *_ = env.reset()
+    ix = 0
+    done = False
+    state, *_ = env.reset()
 
-  while not done:
-      ix += 1
-      action = env.action_space.sample()
-      state, reward, terminated, truncated, _ = env.step(action)
-      #print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}") #ammended from the gitHub for better understanding
-      
-      with open(csv_file, "a", newline="") as file:
-        writer = csv.writer(file, delimiter=";")
-        writer.writerow([ix, reward, terminated, truncated])
+    while not done:
+        ix += 1
+        action = env.action_space.sample()
+        state, reward, terminated, truncated, info = env.step(action)
 
-      
-      done = truncated or terminated
+        # Extract position and distance directly from info
+        position = info.get("position", "N/A")  # Default to "N/A" if not found
+        distance = info.get("distance", "N/A")  # Default to "N/A" if not found
 
-  # Important to stop the STK process
-  env.close()
+        # Write the data to the CSV file
+        with open(csv_file, "a", newline="") as file:
+            writer = csv.writer(file, delimiter=";")
+            writer.writerow([ix, reward, terminated, truncated, position, distance])
+
+        done = truncated or terminated
+
+    env.close()

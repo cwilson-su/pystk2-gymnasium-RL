@@ -15,7 +15,7 @@ csv_file = os.path.join(output_folder, "test0_1_results.csv")
 # Write column titles (only once at the start of the script)
 with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
-    writer.writerow(["Step", "Reward", "Terminated", "Truncated"])
+    writer.writerow(["Step", "Reward", "Terminated", "Truncated", "Position", "Distance"])
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
@@ -24,9 +24,7 @@ if __name__ == '__main__':
         "supertuxkart/flattened-v0",  # Flattened environment
         render_mode="human",         # Enable rendering for visualization
         agent=AgentSpec(use_ai=False),  # Custom agent with manual actions
-        #track="lighthouse"           # Custom track
-        #track="minigolf"
-        track="xr591"
+        track="xr591"                # Custom track
     )
 
     ix = 0
@@ -41,20 +39,22 @@ if __name__ == '__main__':
         # Define custom actions
         action = {
             "continuous": np.array([1.0, -0.5]),  # Acceleration (1.0), Steer left (-0.5)
-            "discrete": [0, 0, 0, 0, 0]           # No brake, no drift, no nitro, etc.
+            "discrete": [0, 0, 0, 0, 1]           # No brake, no drift, no nitro, fire, rescue
         }
 
         # Step the environment with the custom action
-        state, reward, terminated, truncated, _ = env.step(action)
-        #print(f"Step {ix}: Reward={reward}, Terminated={terminated}, Truncated={truncated}")
-        
+        state, reward, terminated, truncated, info = env.step(action)
+
+        # Extract position and distance from info
+        position = info.get("position", "N/A")  # Default to "N/A" if not found
+        distance = info.get("distance", "N/A")  # Default to "N/A" if not found
+
+        # Write the data to the CSV file
         with open(csv_file, "a", newline="") as file:
             writer = csv.writer(file, delimiter=";")
-            writer.writerow([ix, reward, terminated, truncated])
+            writer.writerow([ix, reward, terminated, truncated, position, distance])
 
-        
         # Check if the episode is done
         done = truncated or terminated
 
-    # Stop the STK process to release resources
     env.close()
