@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
         # Write the data to the CSV file
         with open(csv_file, "a", newline="") as file:
-            writer = csv.writer(file, delimiter=";")
+            writer = csv.writer(file, delimiter=";")    # We chose the ";" as delimiter and not the "," since some of our team members use "," as decimal separator (french)
             writer.writerow([ix, reward, terminated, truncated, position, distance])
 
         done = truncated or terminated
