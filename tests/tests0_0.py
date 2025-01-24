@@ -27,26 +27,28 @@ with open(csv_file, "w", newline="") as file:
 # STK gymnasium uses one process
 if __name__ == '__main__':
     # Use a flattened version of the observation and action spaces
-    env = gym.make("supertuxkart/flattened-v0", render_mode="human", agent=AgentSpec(use_ai=True))
+    # Define a single agent (player-controlled)
+    agent = AgentSpec(name="Player", use_ai=False)
+    env = gym.make("supertuxkart/full-v0", 
+                   render_mode="human", 
+                   agent=agent)
 
     ix = 0
     done = False
-    state, *_ = env.reset()
+    states, infos = env.reset()
 
     while not done:
         ix += 1
         action = env.action_space.sample()
-        state, reward, terminated, truncated, info = env.step(action)
+        states, reward, terminated, truncated, info = env.step(action)
+
+        velocity = states["velocity"] if "velocity" in states else [0, 0, 0]
+        speed = np.linalg.norm(velocity)
 
         # Extract position and distance directly from info
         position = info.get("position", "N/A")  # Default to "N/A" if not found
         distance = info.get("distance", "N/A")  # Default to "N/A" if not found
-        
-        velocity = state["velocity"] if "velocity" in state else [0, 0, 0]
-        speed = np.linalg.norm(velocity)
-
-
-
+    
         # Write the data to the CSV file
         with open(csv_file, "a", newline="") as file:
             writer = csv.writer(file, delimiter=";")    # We chose the ";" as delimiter and not the "," since some of our team members use "," as decimal separator (french)
