@@ -42,8 +42,8 @@ if __name__ == '__main__':
         position = info.get("position", "N/A")  # Default to "N/A" if not found
         distance = info.get("distance", "N/A")  # Default to "N/A" if not found
         
-        velocity = state["kart"]["velocity"]  # Extract velocity from the state
-        speed = np.linalg.norm(velocity)  # Compute the magnitude of velocity
+        velocity = state["velocity"] if "velocity" in state else [0, 0, 0]
+        speed = np.linalg.norm(velocity)
 
 
 

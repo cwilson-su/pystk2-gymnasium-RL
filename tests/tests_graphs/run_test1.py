@@ -15,6 +15,7 @@ steps = []
 rewards = []
 positions = []
 distances = []
+velocities = [] 
 
 with open(csv_file, "r") as file:
     reader = csv.reader(file, delimiter=";")
@@ -24,6 +25,7 @@ with open(csv_file, "r") as file:
         rewards.append(float(row[1]))     # Reward
         positions.append(row[4])          # Position
         distances.append(float(row[5]))   # Distance
+        velocities.append(float(row[6])) 
 
 # Plot reward vs step
 plt.figure()
@@ -58,3 +60,13 @@ plt.grid(True)
 plt.savefig(os.path.join("tests", "tests_graphs", "test0_1_distance_graph.png"))
 plt.show()
 
+# Plot velocity vs step
+plt.figure()
+plt.plot(steps, velocities, label="Velocity", color="orange")
+plt.xlabel("Step")
+plt.ylabel("Velocity (m/s)")
+plt.title("Test 1: Velocity vs Step")
+plt.legend()
+plt.grid(True)
+plt.savefig(os.path.join("tests", "tests_graphs", "test0_1_velocity_graph.png"))
+plt.show()

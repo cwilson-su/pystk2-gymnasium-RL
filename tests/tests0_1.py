@@ -19,6 +19,7 @@ with open(csv_file, "w", newline="") as file:
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
+    
     # Create the environment with flattened observation/action spaces
     env = gym.make(
         "supertuxkart/flattened-v0",  # Flattened environment
@@ -49,8 +50,8 @@ if __name__ == '__main__':
         position = info.get("position", "N/A")  # Default to "N/A" if not found
         distance = info.get("distance", "N/A")  # Default to "N/A" if not found
         
-        velocity = info.get("velocity", [0.0, 0.0, 0.0])
-        speed = (velocity[0]**2 + velocity[1]**2 + velocity[2]**2)**0.5
+        velocity = state["velocity"] if "velocity" in state else [0, 0, 0]
+        speed = np.linalg.norm(velocity)
 
         # Write the data to the CSV file
         with open(csv_file, "a", newline="") as file:
