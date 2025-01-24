@@ -15,7 +15,7 @@ csv_file = os.path.join(output_folder, "test0_2_results.csv")
 # Write column titles (only once at the start of the script)
 with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
-    writer.writerow(["Agent", "Reward", "Terminated", "Position", "Distance"])
+    writer.writerow(["Agent", "Reward", "Terminated", "Position", "Distance", "Velocity"])
 
 if __name__ == '__main__':
     # Define the specifications for 5 agents
@@ -69,16 +69,14 @@ if __name__ == '__main__':
             is_terminated = terminated.get(str(i), False) if isinstance(terminated, dict) else terminated
             agent_info = info['infos'].get(str(i), {}) if 'infos' in info and isinstance(info['infos'], dict) else {}
             
-            #print(
-            #    f"Agent {i}: Reward={agent_reward}, "
-            #    f"Terminated={is_terminated}, Info={agent_info}"
-            #)
+            velocity = states[str(i)]["velocity"] if str(i) in states else [0, 0, 0]
+            speed = np.linalg.norm(velocity)  # Compute the magnitude of velocity
             
             with open(csv_file, "a", newline="") as file:
                 writer = csv.writer(file, delimiter=";")
                 position = agent_info.get("position", "N/A")  # Default to "N/A" if not found
                 distance = agent_info.get("distance", "N/A")  # Default to "N/A" if not found
-                writer.writerow([i, agent_reward, is_terminated, position, distance])
+                writer.writerow([i, agent_reward, is_terminated, position, distance, speed])
 
 
         # Check if all agents are done

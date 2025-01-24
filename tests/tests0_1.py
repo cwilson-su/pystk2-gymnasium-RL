@@ -15,7 +15,7 @@ csv_file = os.path.join(output_folder, "test0_1_results.csv")
 # Write column titles (only once at the start of the script)
 with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
-    writer.writerow(["Step", "Reward", "Terminated", "Truncated", "Position", "Distance"])
+    writer.writerow(["Step", "Reward", "Terminated", "Truncated", "Position", "Distance", "Velocity"])
 
 # STK gymnasium uses one process
 if __name__ == '__main__':
@@ -48,11 +48,14 @@ if __name__ == '__main__':
         # Extract position and distance from info
         position = info.get("position", "N/A")  # Default to "N/A" if not found
         distance = info.get("distance", "N/A")  # Default to "N/A" if not found
+        
+        velocity = info.get("velocity", [0.0, 0.0, 0.0])
+        speed = (velocity[0]**2 + velocity[1]**2 + velocity[2]**2)**0.5
 
         # Write the data to the CSV file
         with open(csv_file, "a", newline="") as file:
             writer = csv.writer(file, delimiter=";")
-            writer.writerow([ix, reward, terminated, truncated, position, distance])
+            writer.writerow([ix, reward, terminated, truncated, position, distance, speed])
 
         # Check if the episode is done
         done = truncated or terminated

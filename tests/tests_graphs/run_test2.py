@@ -15,6 +15,7 @@ steps = {}
 rewards = {}
 positions = {}
 distances = {}
+velocities= {}
 
 with open(csv_file, "r") as file:
     reader = csv.reader(file, delimiter=";")
@@ -24,8 +25,9 @@ with open(csv_file, "r") as file:
         step = len(steps.get(agent, [])) + 1
         steps.setdefault(agent, []).append(step)
         rewards.setdefault(agent, []).append(float(row[1]))
-        positions.setdefault(agent, []).append(row[3])  # Position
+        positions.setdefault(agent, []).append(row[3])  
         distances.setdefault(agent, []).append(float(row[4]))
+        velocities.setdefault(agent, []).append(float(row[5]))
 
 # Plot reward vs step
 plt.figure()
@@ -62,3 +64,17 @@ plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join("tests", "tests_graphs", "test0_2_distance_graph.png"))
 plt.show()
+
+
+# Plot speed(velocity) vs step
+plt.figure()
+for agent, agent_steps in steps.items():
+    plt.plot(agent_steps, velocities[agent], label=f"Agent {agent}")
+plt.xlabel("Step")
+plt.ylabel("Speed")
+plt.title("Test 2: Speed vs Step")
+plt.legend()
+plt.grid(True)
+plt.savefig(os.path.join("tests", "tests_graphs", "test0_2_speed_graph.png"))
+plt.show()
+
