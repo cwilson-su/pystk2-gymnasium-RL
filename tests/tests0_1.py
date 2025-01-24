@@ -1,64 +1,71 @@
 import gymnasium as gym
-import numpy as np  # Import NumPy for array handling
+import numpy as np
 from pystk2_gymnasium import AgentSpec
 import os
 import csv
 
-# Set the output folder to the `tests` directory
+# Set the output folder for CSV
 output_folder = os.path.join(os.path.dirname(__file__), "tests_csv")
-
-# Ensure the folder exists (it should already exist, but this ensures robustness)
 os.makedirs(output_folder, exist_ok=True)
 
 csv_file = os.path.join(output_folder, "test0_1_results.csv")
 
-# Write column titles (only once at the start of the script)
+# Write CSV headers
 with open(csv_file, "w", newline="") as file:
     writer = csv.writer(file, delimiter=";")
-    writer.writerow(["Step", "Reward", "Terminated", "Truncated", "Position", "Distance", "Velocity"])
+    writer.writerow(["Step", "Reward", "Terminated", "Position", "Distance", "Velocity"])
 
-# STK gymnasium uses one process
 if __name__ == '__main__':
-    
-    # Create the environment with flattened observation/action spaces
+    # Define a single agent (player-controlled)
+    agent = AgentSpec(name="Player", use_ai=False)
+
+    # Create the environment
     env = gym.make(
-        "supertuxkart/flattened-v0",  # Flattened environment
-        render_mode="human",         # Enable rendering for visualization
-        agent=AgentSpec(use_ai=False),  # Custom agent with manual actions
-        track="xr591"                # Custom track
+        "supertuxkart/full-v0",  # Single-agent environment
+        render_mode="human",
+        agent=agent,
+        track="xr591",  # Custom track
+        laps=3,
+        difficulty=2
     )
 
-    ix = 0
+    step = 0
     done = False
 
     # Reset the environment
-    state, *_ = env.reset()
+    states, infos = env.reset()
 
     while not done:
-        ix += 1
+        step += 1
 
-        # Define custom actions
+        # Define a sample action for the agent
         action = {
-            "continuous": np.array([1.0, -0.5]),  # Acceleration (1.0), Steer left (-0.5)
-            "discrete": [0, 0, 0, 0, 1]           # No brake, no drift, no nitro, fire, rescue
+            "steer": 0.0,
+            "acceleration": 1.0,  # Full acceleration
+            "brake": False,
+            "drift": False,
+            "fire": False,
+            "nitro": False,
+            "rescue": False
         }
 
-        # Step the environment with the custom action
-        state, reward, terminated, truncated, info = env.step(action)
+        # Step the environment
+        states, reward, terminated, truncated, info = env.step(action)
 
-        # Extract position and distance from info
-        position = info.get("position", "N/A")  # Default to "N/A" if not found
-        distance = info.get("distance", "N/A")  # Default to "N/A" if not found
-        
-        velocity = state["velocity"] if "velocity" in state else [0, 0, 0]
+        # Extract velocity
+        velocity = states["velocity"] if "velocity" in states else [0, 0, 0]
         speed = np.linalg.norm(velocity)
 
-        # Write the data to the CSV file
+        # Extract position and distance
+        position = info.get("position", "N/A")
+        distance = info.get("distance", "N/A")
+
+        # Write to CSV
         with open(csv_file, "a", newline="") as file:
             writer = csv.writer(file, delimiter=";")
-            writer.writerow([ix, reward, terminated, truncated, position, distance, speed])
+            writer.writerow([step, reward, terminated, position, distance, speed])
 
-        # Check if the episode is done
-        done = truncated or terminated
+        # Check if race is done
+        done = terminated or truncated
 
     env.close()

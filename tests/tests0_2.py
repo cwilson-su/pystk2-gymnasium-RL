@@ -68,7 +68,6 @@ if __name__ == '__main__':
             agent_reward = reward if isinstance(reward, (int, float)) else reward.get(str(i), 0.0)
             is_terminated = terminated.get(str(i), False) if isinstance(terminated, dict) else terminated
             agent_info = info['infos'].get(str(i), {}) if 'infos' in info and isinstance(info['infos'], dict) else {}
-            
             velocity = states[str(i)]["velocity"] if str(i) in states else [0, 0, 0]
             speed = np.linalg.norm(velocity)  # Compute the magnitude of velocity
             

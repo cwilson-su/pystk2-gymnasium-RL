@@ -75,6 +75,6 @@ plt.ylabel("Speed")
 plt.title("Test 2: Speed vs Step")
 plt.legend()
 plt.grid(True)
-plt.savefig(os.path.join("tests", "tests_graphs", "test0_2_speed_graph.png"))
+plt.savefig(os.path.join("tests", "tests_graphs", "test0_2_velocity_graph.png"))
 plt.show()
 
