@@ -1,10 +1,3 @@
-# -----------------------This is the sample test that was given on the GitHub-------------------------
-
-# 1 agent
-# 1 kart
-# flattened action space
-# no custom track
-
 import gymnasium as gym
 import numpy as np
 from pystk2_gymnasium import AgentSpec
@@ -28,9 +21,9 @@ if __name__ == '__main__':
     # Define a single agent (player-controlled)
     agent = AgentSpec(name="Player", use_ai=True)
     env = gym.make("supertuxkart/full-v0", 
-                   render_mode="human", 
-                   agent=agent,
-                   track="xr591")
+                render_mode="human", 
+                agent=agent,
+                track="xr591")
 
     ix = 0
     done = False

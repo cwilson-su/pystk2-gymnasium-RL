@@ -32,7 +32,7 @@ with open(csv_file, "r") as file:
         velocities.append(float(row[6]))  # Velocity
 
 # Plot reward vs step
-plt.figure(figsize=(10, 6))
+plt.figure()
 plt.plot(steps, rewards, label="Reward", color="blue")
 plt.xlabel("Steps")
 plt.ylabel("Reward")
