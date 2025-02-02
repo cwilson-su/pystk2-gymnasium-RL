@@ -14,7 +14,10 @@ dict_keys(['phase', 'aux_ticks', 'powerup', 'attachment', 'attachment_time_left'
 '''
 
 # Function to generate track data and save to CSV
-def generate_track_csv(track_name, output_file):
+def generate_track_csv(track_name, output_folder):
+    # Ensure the output directory exists
+    os.makedirs(output_folder, exist_ok=True)
+    output_file = os.path.join(output_folder, f"{track_name}_track_data.csv")
     
     agent = AgentSpec(name="Player", use_ai=True)
     env = gym.make("supertuxkart/full-v0", render_mode="human", agent=agent, track=track_name)
@@ -46,7 +49,6 @@ def generate_track_csv(track_name, output_file):
     env.close()
     print(f"✅ Track data saved to {output_file}")
 
-import os
-current_dir = os.path.dirname(os.path.abspath(__file__))  # I'm saving in the script's directory, but that can be changed later ofc
-csv_path = os.path.join(current_dir, "track_data.csv")
-generate_track_csv("xr591", csv_path)
+current_dir = os.path.dirname(os.path.abspath(__file__))  # saving in the script's directory
+output_folder = current_dir  # Save in the same directory as script
+generate_track_csv("xr591", output_folder)
