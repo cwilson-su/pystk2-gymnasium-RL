@@ -6,9 +6,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from pystk2_gymnasium import AgentSpec
 
-# Set output folder
-output_folder = os.path.join(os.path.dirname(__file__), "tests_tracks")
-os.makedirs(output_folder, exist_ok=True)
+# Set output folder to current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))  
+output_folder = current_dir
 
 # Define output CSV files
 track_name = "xr591"
@@ -44,7 +44,10 @@ with open(track_nodes_file, "w", newline="") as file:
         start, end = segment
         writer.writerow([*start, *end])
 
-env.close()
+try:
+    env.close()
+finally:
+    del env  # Explicitly delete the environment to ensure proper cleanup
 
 # Load CSVs for visualization
 df_track = pd.read_csv(track_data_file)
