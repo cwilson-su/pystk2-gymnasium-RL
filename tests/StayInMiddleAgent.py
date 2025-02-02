@@ -51,6 +51,7 @@ class StayInMiddleAgent:
         self.reset()
         for step in range(steps):
             done = self.step()
+            yield self.obs
             if done:
                 break
 
