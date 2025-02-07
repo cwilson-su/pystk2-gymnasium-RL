@@ -1,8 +1,3 @@
----
-title: 'Rapport Hebdomadaire - Semaine [XX]'
-
----
-
 # Rapport Hebdomadaire - Semaine [XX]
 
 **Date :** [JJ/MM/AAAA]  
