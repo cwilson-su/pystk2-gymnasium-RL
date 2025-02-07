@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3  # Fetches your repo
+      uses: actions/checkout@v4  # Fetches your repo
 
     - name: Set Up Python
       uses: actions/setup-python@v4
