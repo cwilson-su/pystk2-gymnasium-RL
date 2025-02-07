@@ -1,8 +1,3 @@
----
-title: 'Compte Rendu de Réunion - Semaine [XX]'
-
----
-
 # Compte Rendu de Réunion - Semaine [XX]
 
 **Date :** [JJ/MM/AAAA]  
