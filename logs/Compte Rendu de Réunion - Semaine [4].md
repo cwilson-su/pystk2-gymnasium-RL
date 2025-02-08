@@ -1,16 +1,16 @@
-# Compte Rendu de Réunion - Semaine [4]
+# Compte Rendu de Réunion - Semaine 4
 
-**Date :** [07/02/2025]  
+**Date :** 06/02/2025  
 
 ---
 
 ## 1. Organisation
 - **Trello :**
-- Mettre les tâches non finies dans "tâche à reprendre" ou "à corriger".
-- Les tâches doivent être mises en archive après la réunion et non avant.
-- Les tâches “réunion” ne sont pas très utiles, mais on peut laisser un compte rendu de nos réunions sur GitHub.
-- Rappel de la Méthode agile : on définit ce qui doit être fait et on le découpe en petites tâches. 
-  N’importe qui peut prendre n’importe quelle tâche. Pas de réunion pour dispatcher les tâches.
+  - Mettre les tâches non finies dans "tâche à reprendre" ou "à corriger".
+  - Les tâches doivent être mises en archive après la réunion et non avant.
+  - Les tâches “réunion” ne sont pas très utiles, mais on peut laisser un compte rendu de nos réunions sur GitHub.
+  - Rappel de la Méthode agile : on définit ce qui doit être fait et on le découpe en petites tâches. 
+    N’importe qui peut prendre n’importe quelle tâche. Pas de réunion pour dispatcher les tâches.
 
 
 - **GitHub :**
@@ -19,27 +19,28 @@
     - Une pour les résultats expérimentaux,
     - Une partie "tools" pour permettre de tester facilement les fichiers et créer des graphes en suivant notre tutoriel.
   - Suivre les règles imposées par "The Figure Checklist" pour éviter tout problème juridique.
+ 
+- **contre-rendus réunion et semaine :**
+  - À partir de cette semaine et ce jusqu’à la fin du projet, les comptes rendus de réunion de semaine ainsi que ceux de fin de semaine seront rédigés au format md et soumis directement sur ce GitHub.
 
 
 ## 2. Réponses aux questions de la semaine
 > Liste des problèmes rencontrés et des réponses apportées.
 
 Problèmes
--  1) Lorsque les nœuds ont été tracés sur le même graphique que la
+1) Lorsque les nœuds ont été tracés sur le même graphique que la
   piste, ils apparaissaient décalés. Ce décalage suggère que les
   coordonnées des nœuds et celles de la piste ne sont pas dans le
   même référentiel ou qu'il y a un problème d'échelle ou de
   transformation des coordonnées.
--  2) Nous avons tenté de générer un graphe représentant la trajectoire
+2) Nous avons tenté de générer un graphe représentant la trajectoire
    parcourue par un agent. Cependant, le graphe obtenu n’a aucun sens :
    l’agent n’est pas du tout sur la piste. Nous ne comprenons pas
-   notre résultat. Peut-être que notre compréhension ou notre
-   écriture du code est incorrecte. Pouvez-vous nous éclairer sur ce
-   point ?
+   notre résultat.
 
 Réponses
-- 1) Tenter de calculer l'offset entre les nodes et le centre du circuit de facon generique.
-- 2) Les coordonnées sont peut être relative à quelque chose ce qui provoque l’incohérence.
+1) Tenter de calculer l'offset entre les nodes et le centre du circuit de facon generique pour chaque circuit.
+2) Lire la documentation afin de savoir sur quoi se base la position de l'agent.
 
 
 
@@ -91,7 +92,7 @@ Réponses
 ---
 
 ## 6. Nb d'heures de travail cette semaine par membre
-> Combien d'heures de travail chaque membre de l'equipe prevoit cette semaine
+> Point non évoqué durant cette réunion mais a été convenu le lendemain.
 
 |  Nom   |  Nombres d'heures prévues   |
 |-----|-----|
@@ -102,5 +103,5 @@ Réponses
 
 ---
 
-**Rédigé par :** [Badr]  
-**Vérifié par :** [Noms des verificateurs]  
+**Rédigé par :** Badr  
+**Vérifié par :** Mahmoud, Cedric  
