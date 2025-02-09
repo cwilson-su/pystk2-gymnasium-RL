@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # Define paths
-test_script = os.path.join("tests", "tests0_3.py")
+test_script = os.path.join("tests", "refrac03.py")
 csv_file = os.path.join("tests", "tests_csv", "test0_3_results.csv")
 track_nodes_file = os.path.join("tests", "tests_csv", "test0_3_track_nodes.csv")
 graph_folder = os.path.join("tests", "tests_graphs")
@@ -40,7 +40,6 @@ plt.title("Test 3: Reward vs Steps")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join(graph_folder, "test0_3_reward_graph.png"))
-plt.show()
 
 # Plot position vs step
 plt.figure(figsize=(10, 6))
@@ -51,7 +50,6 @@ plt.title("Test 3: Position vs Steps")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join(graph_folder, "test0_3_position_graph.png"))
-plt.show()
 
 # Plot distance vs step
 plt.figure(figsize=(10, 6))
@@ -62,7 +60,6 @@ plt.title("Test 3: Distance vs Steps")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join(graph_folder, "test0_3_distance_graph.png"))
-plt.show()
 
 # Plot velocity vs step
 plt.figure(figsize=(10, 6))
@@ -73,7 +70,6 @@ plt.title("Test 3: Velocity vs Steps")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join(graph_folder, "test0_3_velocity_graph.png"))
-plt.show()
 
 # Plot track nodes in 3D
 def plot_track_nodes(csv_file):
@@ -96,7 +92,6 @@ def plot_track_nodes(csv_file):
     ax.set_zlabel("Z (Depth)")
     plt.grid(True)
     plt.savefig(os.path.join(graph_folder, "test0_3_track_nodes_graph.png"))
-    plt.show()
 
 # Plot track nodes
 plot_track_nodes(track_nodes_file)
