@@ -6,9 +6,9 @@ import gymnasium as gym
 import numpy as np
 from pystk2_gymnasium import AgentSpec
 
+# Set up CSV file
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
-csv_file = setup_output("single_AI_FlattennedActionS.csv", output_directory=csv_base_dir)
-
+csv_file = setup_output("single_AI_Flattenned_ActionS.csv", output_directory=csv_base_dir)
 write_csv_header(csv_file, "Step", "Reward", "Terminated", "Truncated", "Position", "Distance", "Velocity")
 
 if __name__ == '__main__':

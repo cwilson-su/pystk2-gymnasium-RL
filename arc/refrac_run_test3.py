@@ -10,10 +10,10 @@ from common import (
 )
 
 # Define paths
-test_script = os.path.join("tests", "refrac03.py")
+test_script = os.path.join("arc", "refrac03.py")
 csv_file = setup_output("test0_3_results.csv")
 track_nodes_file = setup_output("test0_3_track_nodes.csv")
-graph_folder = os.path.join("tests", "tests_graphs")
+graph_folder = os.path.join("arc", "tests_graphs")
 os.makedirs(graph_folder, exist_ok=True)
 
 # Execute the test script to generate the CSV files

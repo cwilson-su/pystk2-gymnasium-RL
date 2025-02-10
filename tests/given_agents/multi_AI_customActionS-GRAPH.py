@@ -1,11 +1,14 @@
 import os
-import csv
+import sys
 import subprocess
-import matplotlib.pyplot as plt
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "utils")))
+from csvRW import setup_output, read_csv_data
+from plot import plt_multi_agent_plot
 
 # Define paths
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
-csv_file = os.path.join(csv_base_dir, "multi_AI_customActionS.csv")
+csv_file = setup_output("multi_AI_custom_ActionS.csv", output_directory=csv_base_dir)
 
 graph_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_graph_base"))
 os.makedirs(graph_folder, exist_ok=True)
@@ -14,69 +17,29 @@ os.makedirs(graph_folder, exist_ok=True)
 test_script = os.path.join(os.path.dirname(__file__), "multi_AI_customActionS-CSV.py")
 subprocess.run(["python3", test_script])
 
-# Read CSV data
-steps = {}
-rewards = {}
-positions = {}
-distances = {}
-velocities = {}
+data_dict = read_csv_data(csv_file, is_multi_agent=True)
 
-with open(csv_file, "r") as file:
-    reader = csv.reader(file, delimiter=";")
-    next(reader)  # Skip the header row
-    for row in reader:
-        agent = int(row[0])
-        step = len(steps.get(agent, [])) + 1
-        steps.setdefault(agent, []).append(step)
-        rewards.setdefault(agent, []).append(float(row[1]))
-        positions.setdefault(agent, []).append(row[3])
-        distances.setdefault(agent, []).append(float(row[4]))
-        velocities.setdefault(agent, []).append(float(row[5]))
-
+steps = {agent: list(range(len(data_dict["Reward"][agent]))) for agent in data_dict["Reward"].keys()}
+rewards = data_dict.get("Reward", [])
+positions = data_dict.get("Position", [])
+distances = data_dict.get("Distance", [])
+velocities = data_dict.get("Velocity", [])
 # Plot reward vs step
-plt.figure()
-for agent, agent_steps in steps.items():
-    plt.plot(agent_steps, rewards[agent], label=f"Agent {agent}")
-plt.xlabel("Step")
-plt.ylabel("Reward")
-plt.title("Multi-Agent: Reward vs Step")
-plt.legend()
-plt.grid(True)
-plt.savefig(os.path.join(graph_folder, "multi_AI_reward_graph.png"))
-plt.show()
+
+plt_multi_agent_plot(steps, rewards, "Steps", "Reward", "Multi-Agent: Reward vs Steps",
+                       os.path.join(graph_folder, "multi_AI_reward_graph.png"))
 
 # Plot position vs step
-plt.figure()
-for agent, agent_steps in steps.items():
-    plt.plot(agent_steps, positions[agent], label=f"Agent {agent}")
-plt.xlabel("Step")
-plt.ylabel("Position")
-plt.title("Multi-Agent: Position vs Step")
-plt.legend()
-plt.grid(True)
-plt.savefig(os.path.join(graph_folder, "multi_AI_position_graph.png"))
-plt.show()
+
+plt_multi_agent_plot(steps, positions, "Steps", "Position", "Multi-Agent: Position vs Steps",
+                       os.path.join(graph_folder, "multi_AI_position_graph.png"))
 
 # Plot distance vs step
-plt.figure()
-for agent, agent_steps in steps.items():
-    plt.plot(agent_steps, distances[agent], label=f"Agent {agent}")
-plt.xlabel("Step")
-plt.ylabel("Distance")
-plt.title("Multi-Agent: Distance vs Step")
-plt.legend()
-plt.grid(True)
-plt.savefig(os.path.join(graph_folder, "multi_AI_distance_graph.png"))
-plt.show()
+
+plt_multi_agent_plot(steps, distances, "Steps", "Distance", "Multi-Agent: Distance vs Steps",
+                       os.path.join(graph_folder, "multi_AI_distance_graph.png"))
 
 # Plot velocity vs step
-plt.figure()
-for agent, agent_steps in steps.items():
-    plt.plot(agent_steps, velocities[agent], label=f"Agent {agent}")
-plt.xlabel("Step")
-plt.ylabel("Speed")
-plt.title("Multi-Agent: Speed vs Step")
-plt.legend()
-plt.grid(True)
-plt.savefig(os.path.join(graph_folder, "multi_AI_velocity_graph.png"))
-plt.show()
+
+plt_multi_agent_plot(steps, velocities, "Steps", "Velocity (m/s)", "Multi-Agent: Velocity vs Steps",
+                       os.path.join(graph_folder, "multi_AI_velocity_graph.png"))

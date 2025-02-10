@@ -3,17 +3,16 @@ import numpy as np
 from pystk2_gymnasium import AgentSpec
 import os
 import csv
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "utils"))) # Add src/utils to Python path
+from csvRW import setup_output, write_csv_header, write_to_csv
 
 # Define correct directories
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
-os.makedirs(csv_base_dir, exist_ok=True)  # Ensure the directory exists
-
-csv_file = os.path.join(csv_base_dir, "multi_AI_customActionS.csv")
+csv_file = setup_output("multi_AI_custom_ActionS.csv", output_directory=csv_base_dir)
 
 # Write column titles (only once at the start of the script)
-with open(csv_file, "w", newline="") as file:
-    writer = csv.writer(file, delimiter=";")
-    writer.writerow(["Agent", "Reward", "Terminated", "Position", "Distance", "Velocity"])
+write_csv_header(csv_file, "Agent", "Reward", "Terminated", "Position", "Distance", "Velocity")
 
 if __name__ == '__main__':
     # Define the specifications for 5 agents
@@ -68,13 +67,9 @@ if __name__ == '__main__':
             agent_info = info['infos'].get(str(i), {}) if 'infos' in info and isinstance(info['infos'], dict) else {}
             velocity = states[str(i)]["velocity"] if str(i) in states else [0, 0, 0]
             speed = np.linalg.norm(velocity)
-
-            with open(csv_file, "a", newline="") as file:
-                writer = csv.writer(file, delimiter=";")
-                position = agent_info.get("position", "N/A")
-                distance = agent_info.get("distance", "N/A")
-                writer.writerow([i, agent_reward, is_terminated, position, distance, speed])
-
+            position = agent_info.get("position", "N/A")
+            distance = agent_info.get("distance", "N/A")
+            write_to_csv(csv_file, i, agent_reward, is_terminated, position, distance, speed)
         # Check if all agents are done
         done = all(terminated.values()) if isinstance(terminated, dict) else terminated
 

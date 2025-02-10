@@ -17,7 +17,11 @@ subprocess.run(["python3", test_script])
 
 # Read CSV data
 csv_data = read_csv_data(csv_file)
-steps, rewards, positions, distances, velocities = csv_data[0], csv_data[1], csv_data[-3], csv_data[-2], csv_data[-1]
+steps = csv_data["Step"]
+rewards = csv_data["Reward"]
+positions = csv_data["Position"]
+distances = csv_data["Distance"]
+velocities = csv_data["Velocity"]
 
 
 # Define graph output folder

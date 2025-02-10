@@ -2,14 +2,14 @@ import csv
 import sys
 import os
 import subprocess
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from common import setup_output, read_csv_data, plot_multi_agent_graph
 
 
 # Define paths
-test_script = os.path.join("tests", "refrac02.py")
+test_script = os.path.join("arc", "refrac02.py")
 csv_file = setup_output("test0_2_results.csv")
-graph_folder = os.path.join("tests", "tests_graphs")
+graph_folder = os.path.join("arc", "tests_graphs")
 os.makedirs(graph_folder, exist_ok=True)
 
 # Run the test script

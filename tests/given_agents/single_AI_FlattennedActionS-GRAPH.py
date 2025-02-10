@@ -8,14 +8,20 @@ from plot import plt_plot
 
 # Define paths
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
-csv_file = setup_output("single_AI_FlattennedActionS.csv", output_directory=csv_base_dir)
+csv_file = setup_output("single_AI_Flattenned_ActionS.csv", output_directory=csv_base_dir)
 
 # Run the test script to generate the CSV
 test_script = os.path.join(os.path.dirname(__file__), "single_AI_FlattennedActionS-CSV.py")
 subprocess.run(["python3", test_script])
 
 # Read CSV data
-steps, rewards, terminated, truncated, positions, distances, velocities = read_csv_data(csv_file)
+#steps, rewards, terminated, truncated, positions, distances, velocities = read_csv_data(csv_file)
+csv_data = read_csv_data(csv_file)
+steps = csv_data["Step"]
+rewards = csv_data["Reward"]
+positions = csv_data["Position"]
+distances = csv_data["Distance"]
+velocities = csv_data["Velocity"]
 
 # Define graph output folder
 graph_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_graph_base"))

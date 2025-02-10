@@ -6,9 +6,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from common import setup_output, read_csv_data, plot_graph
 
 # Define paths
-test_script = os.path.join("tests", "refrac01.py")
+test_script = os.path.join("arc", "refrac01.py")
 csv_file = setup_output("test0_1_results.csv")
-graph_folder = os.path.join("tests", "tests_graphs")
+graph_folder = os.path.join("arc", "tests_graphs")
 os.makedirs(graph_folder, exist_ok=True)
 
 # Run the test script
