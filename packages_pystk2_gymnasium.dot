@@ -1,0 +1,21 @@
+digraph "packages_pystk2_gymnasium" {
+rankdir=BT
+charset="utf-8"
+"pystk2_gymnasium" [color="black", label=<pystk2_gymnasium>, shape="box", style="solid"];
+"pystk2_gymnasium.definitions" [color="black", label=<pystk2_gymnasium.definitions>, shape="box", style="solid"];
+"pystk2_gymnasium.envs" [color="black", label=<pystk2_gymnasium.envs>, shape="box", style="solid"];
+"pystk2_gymnasium.pystk_process" [color="black", label=<pystk2_gymnasium.pystk_process>, shape="box", style="solid"];
+"pystk2_gymnasium.stk_wrappers" [color="black", label=<pystk2_gymnasium.stk_wrappers>, shape="box", style="solid"];
+"pystk2_gymnasium.utils" [color="black", label=<pystk2_gymnasium.utils>, shape="box", style="solid"];
+"pystk2_gymnasium.wrappers" [color="black", label=<pystk2_gymnasium.wrappers>, shape="box", style="solid"];
+"pystk2_gymnasium" -> "pystk2_gymnasium.definitions" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium" -> "pystk2_gymnasium.stk_wrappers" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium" -> "pystk2_gymnasium.wrappers" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.envs" -> "pystk2_gymnasium.definitions" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.envs" -> "pystk2_gymnasium.pystk_process" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.envs" -> "pystk2_gymnasium.utils" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.stk_wrappers" -> "pystk2_gymnasium.definitions" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.stk_wrappers" -> "pystk2_gymnasium.envs" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.stk_wrappers" -> "pystk2_gymnasium.utils" [arrowhead="open", arrowtail="none"];
+"pystk2_gymnasium.wrappers" -> "pystk2_gymnasium.definitions" [arrowhead="open", arrowtail="none"];
+}
