@@ -14,41 +14,35 @@ dict_keys(['phase', 'aux_ticks', 'powerup', 'attachment', 'attachment_time_left'
 '''
 
 # Function to generate track data and save to CSV
-def generate_track_csv(track_name, output_folder):
-    # Ensure the output directory exists
-    os.makedirs(output_folder, exist_ok=True)
-    output_file = os.path.join(output_folder, f"{track_name}_track_data.csv")
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_csv_base"))
+os.makedirs(csv_base_dir, exist_ok=True)
+
+def generate_track_csv(track_name):
+    """Generates track data and saves it to a CSV file."""
+    output_file = os.path.join(csv_base_dir, f"{track_name}_track_data.csv")
     
     agent = AgentSpec(name="Player", use_ai=True)
     env = gym.make("supertuxkart/full-v0", render_mode="human", agent=agent, track=track_name)
     obs, _ = env.reset()
 
-    # Open CSV file for writing
     with open(output_file, "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["Center_X", "Center_Y", "Center_Z", "Left_X", "Left_Y", "Left_Z", "Right_X", "Right_Y", "Right_Z"])
 
-        # Iterate through ALL track points
         for i in range(len(obs["paths_start"])):
-            center_vector = np.array(obs["paths_start"][i])  # Use paths_start instead of static center
-            track_width = obs["paths_width"][i][0]  # Extract track width value
-
-            # Calculate left and right boundaries using directional estimation
+            center_vector = np.array(obs["paths_start"][i])
+            track_width = obs["paths_width"][i][0]
             direction_vector = np.array(obs["paths_end"][i]) - np.array(obs["paths_start"][i])
-            direction_vector = direction_vector / np.linalg.norm(direction_vector)  # Normalize direction
-
-            # Compute perpendicular vector (approximate left/right direction)
+            direction_vector /= np.linalg.norm(direction_vector)
             left_offset = np.cross(direction_vector, [0, 1, 0]) * (track_width / 2)
             right_offset = -left_offset
-
             left_vector = center_vector + left_offset
             right_vector = center_vector + right_offset
-
             writer.writerow([*center_vector, *left_vector, *right_vector])
 
     env.close()
-    print(f"✅ Track data saved to {output_file}")
+    print(f"Track data saved to {output_file}")
 
-current_dir = os.path.dirname(os.path.abspath(__file__))  # saving in the script's directory
-output_folder = current_dir  # Save in the same directory as script
-generate_track_csv("xr591", output_folder)
+# Generate track CSV
+generate_track_csv("xr591")
+
