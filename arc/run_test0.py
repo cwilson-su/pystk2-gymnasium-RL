@@ -4,7 +4,7 @@ import subprocess
 import matplotlib.pyplot as plt
 
 # Define paths
-test_script = os.path.join("tests", "refrac00.py")
+test_script = os.path.join("tests", "tests0_0.py")
 csv_file = os.path.join("tests", "tests_csv", "test0_0_results.csv")
 
 # Run the test script
@@ -36,6 +36,7 @@ plt.title("Test 0: Reward vs Step")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join("tests", "tests_graphs", "test0_0_reward_graph.png"))
+plt.show()
 
 # Plot position vs step
 plt.figure()
@@ -46,6 +47,7 @@ plt.title("Test 0: Position vs Step")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join("tests", "tests_graphs", "test0_0_position_graph.png"))
+plt.show()
 
 # Plot distance vs step
 plt.figure()
@@ -56,6 +58,7 @@ plt.title("Test 0: Distance vs Step")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join("tests", "tests_graphs", "test0_0_distance_graph.png"))
+plt.show()
 
 # Plot velocity vs step
 plt.figure()
@@ -66,3 +69,4 @@ plt.title("Test 0: Velocity vs Step")
 plt.legend()
 plt.grid(True)
 plt.savefig(os.path.join("tests", "tests_graphs", "test0_0_velocity_graph.png"))
+plt.show()
