@@ -6,7 +6,7 @@ from pystk2_gymnasium import AgentSpec
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "utils"))) 
 from csvRW import setup_output, write_csv_header, write_to_csv 
 
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_csv","given_agents"))
 csv_file = setup_output("single_NoAI_customActionS.csv", output_directory=csv_base_dir)
 
 write_csv_header(csv_file, "Step", "Reward", "Terminated", "Position", "Distance", "Velocity")

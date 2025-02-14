@@ -1,4 +1,5 @@
 import csv
+import os
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from FollowTrackNodesAgent import FollowTrackNodesAgent
@@ -48,7 +49,8 @@ def plot_track_and_agent(track_nodes, agent_positions):
 
 if __name__ == "__main__":
     # Load the track nodes from the CSV file generated in tests0_3.py
-    track_nodes_file = "tests/tests_csv/test0_3_track_nodes.csv"
+    
+    track_nodes_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_graph","track_nodes_visualization")), "test0_3_track_nodes.csv")
     track_nodes = load_track_nodes(track_nodes_file)
 
     # Initialize the agent and specify the track

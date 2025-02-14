@@ -14,7 +14,7 @@ dict_keys(['phase', 'aux_ticks', 'powerup', 'attachment', 'attachment_time_left'
 '''
 
 # Function to generate track data and save to CSV
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_csv_base"))
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","track_data"))
 os.makedirs(csv_base_dir, exist_ok=True)
 
 def generate_track_csv(track_name):

@@ -7,10 +7,10 @@ from csvRW import setup_output, read_csv_data
 from plot import plt_multi_agent_plot
 
 # Define paths
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_csv","given_agents"))
 csv_file = setup_output("multi_AI_custom_ActionS.csv", output_directory=csv_base_dir)
 
-graph_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_graph_base"))
+graph_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_graph","given_agents_visualizations"))
 os.makedirs(graph_folder, exist_ok=True)
 
 # Run the test script to generate the CSV

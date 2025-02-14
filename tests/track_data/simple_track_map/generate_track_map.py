@@ -13,8 +13,8 @@ import os
     It contains some hidden gems data the tracks ;)'''
 
 # Set up directories
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_csv_base"))
-graph_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_graph_base"))
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","track_data"))
+graph_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_graph","track_visualization"))
 os.makedirs(graph_base_dir, exist_ok=True)
 
 def plot_track_3d(track_name):
@@ -22,23 +22,35 @@ def plot_track_3d(track_name):
     csv_file = os.path.join(csv_base_dir, f"{track_name}_track_data.csv")
     df = pd.read_csv(csv_file)
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter3d(x=df['Center_X'], y=df['Center_Y'], z=df['Center_Z'], mode='lines', name='Center Line', line=dict(color='blue')))
-    fig.add_trace(go.Scatter3d(x=df['Left_X'], y=df['Left_Y'], z=df['Left_Z'], mode='lines', name='Left Boundary', line=dict(color='red')))
-    fig.add_trace(go.Scatter3d(x=df['Right_X'], y=df['Right_Y'], z=df['Right_Z'], mode='lines', name='Right Boundary', line=dict(color='green')))
+    center_x, center_y, center_z = df['Center_X'], df['Center_Y'], df['Center_Z']
+    left_x, left_y, left_z = df['Left_X'], df['Left_Y'], df['Left_Z']
+    right_x, right_y, right_z = df['Right_X'], df['Right_Y'], df['Right_Z']
 
-    for i in range(len(df) - 1):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter3d(x=center_x, y=center_y, z=center_z, mode='lines', name='Center Line', line=dict(color='blue')))
+    fig.add_trace(go.Scatter3d(x=left_x, y=left_y, z=left_z, mode='lines', name='Left Boundary', line=dict(color='red')))
+    fig.add_trace(go.Scatter3d(x=right_x, y=right_y, z=right_z, mode='lines', name='Right Boundary', line=dict(color='green')))
+
+    for i in range(len(left_x) - 1):
         fig.add_trace(go.Mesh3d(
-            x=[df['Left_X'][i], df['Left_X'][i+1], df['Right_X'][i+1], df['Right_X'][i]],
-            y=[df['Left_Y'][i], df['Left_Y'][i+1], df['Right_Y'][i+1], df['Right_Y'][i]],
-            z=[df['Left_Z'][i], df['Left_Z'][i+1], df['Right_Z'][i+1], df['Right_Z'][i]],
+            x=[left_x[i], left_x[i+1], right_x[i+1], right_x[i]],
+            y=[left_y[i], left_y[i+1], right_y[i+1], right_y[i]],
+            z=[left_z[i], left_z[i+1], right_z[i+1], right_z[i]],
             color='gray', opacity=0.5, showscale=False
         ))
+    
+    fig.update_layout(
+        title=f'3D Track Visualization - {track_name}',
+        scene=dict(xaxis_title='X', yaxis_title='Y', zaxis_title='Z'),
+        margin=dict(l=0, r=0, b=0, t=40)
+    )
 
     output_image = os.path.join(graph_base_dir, f"{track_name}_track_visualization.png")
     fig.write_image(output_image)
     print(f"Graph saved as {output_image}")
     fig.show()
+    fig.write_html(f"{track_name}_track_visualization.html", auto_open=True)
+    
 
 # Plot track
 plot_track_3d("xr591") # change the track name to visualize a different track!!

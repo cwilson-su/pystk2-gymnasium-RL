@@ -7,8 +7,8 @@ import plotly.graph_objects as go
 from pystk2_gymnasium import AgentSpec
 
 # Set up directories
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_csv_base"))
-graph_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_graph_base"))
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","track_data"))
+graph_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_graph","track_nodes_visualization"))
 os.makedirs(csv_base_dir, exist_ok=True)
 os.makedirs(graph_base_dir, exist_ok=True)
 
@@ -88,3 +88,4 @@ fig.write_image(output_image)
 print(f"Graph saved as {output_image}")
 
 fig.show()
+fig.write_html(os.path.join(graph_base_dir, f"{track_name}_track_nodes_visualization.html"), auto_open=True)

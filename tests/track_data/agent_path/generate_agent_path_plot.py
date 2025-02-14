@@ -6,17 +6,15 @@ import pandas as pd
 import plotly.graph_objects as go
 from pystk2_gymnasium import AgentSpec
 
-# Set up directories
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_csv_base"))
-graph_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ZZ_graph_base"))
-os.makedirs(csv_base_dir, exist_ok=True)
-os.makedirs(graph_base_dir, exist_ok=True)
+# Set output folder to current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))  
+output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_graph","agent_path"))
 
 # Define output CSV files
 track_name = "xr591"
-track_data_file = os.path.join(csv_base_dir, f"{track_name}_track_data.csv")
-track_nodes_file = os.path.join(csv_base_dir, f"{track_name}_track_nodes.csv")
-agent_path_file = os.path.join(csv_base_dir, f"{track_name}_agent_path.csv")
+track_data_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","track_data")), f"{track_name}_track_data.csv")
+track_nodes_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","track_nodes")), f"{track_name}_track_nodes.csv")
+agent_path_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","agent_path")), f"{track_name}_agent_path.csv")
 
 # Initialize environment
 agent = AgentSpec(name="Player", use_ai=True)
@@ -31,7 +29,7 @@ with open(track_data_file, "w", newline="") as file:
         center_vector = np.array(obs["paths_start"][i])
         track_width = obs["paths_width"][i][0]
         direction_vector = np.array(obs["paths_end"][i]) - np.array(obs["paths_start"][i])
-        direction_vector /= np.linalg.norm(direction_vector)
+        direction_vector = direction_vector / np.linalg.norm(direction_vector)
         left_offset = np.cross(direction_vector, [0, 1, 0]) * (track_width / 2)
         right_offset = -left_offset
         left_vector = center_vector + left_offset
@@ -62,7 +60,7 @@ with open(agent_path_file, "w", newline="") as file:
 try:
     env.close()
 finally:
-    del env  # Ensure proper cleanup
+    del env  # Explicitly delete the environment to ensure proper cleanup
 
 # Load CSVs for visualization
 df_track = pd.read_csv(track_data_file)
@@ -100,8 +98,9 @@ fig.update_layout(
 )
 
 # Save plot as PNG
-output_image = os.path.join(graph_base_dir, f"{track_name}_track_agent_path_visualization.png")
+output_image = os.path.join(output_folder, f"{track_name}_track_agent_path_visualization.png")
 fig.write_image(output_image)
 print(f"Graph saved as {output_image}")
 
 fig.show()
+fig.write_html(os.path.join(output_folder, f"{track_name}_track_agent_path_visualization.html"), auto_open=True)

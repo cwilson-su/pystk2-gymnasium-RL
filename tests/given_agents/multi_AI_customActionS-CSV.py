@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from csvRW import setup_output, write_csv_header, write_to_csv
 
 # Define correct directories
-csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "ZZ_csv_base"))
+csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_csv","given_agents"))
 csv_file = setup_output("multi_AI_custom_ActionS.csv", output_directory=csv_base_dir)
 
 # Write column titles (only once at the start of the script)
