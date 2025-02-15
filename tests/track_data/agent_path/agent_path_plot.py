@@ -86,7 +86,7 @@ fig.add_trace(go.Scatter3d(x=df_track['Right_X'], y=df_track['Right_Y'], z=df_tr
 fig.add_trace(go.Scatter3d(x=df_nodes['Start_X'], y=df_nodes['Start_Y'], z=df_nodes['Start_Z'], mode='markers', name='Track Nodes', marker=dict(color='purple', size=3)))
 
 # Plot agent path with corrected world coordinates
-fig.add_trace(go.Scatter3d(x=df_agent['Agent_X'], y=df_agent['Agent_Y'], z=df_agent['Agent_Z'], mode='lines', name='Agent Path', line=dict(color='orange')))
+fig.add_trace(go.Scatter3d(x=df_agent['Agent_X'], y=df_agent['Agent_Y'], z=df_agent['Agent_Z'], mode='lines', name='Agent Path', line=dict(color='orange',width=5)))
 
 # Layout settings
 fig.update_layout(
