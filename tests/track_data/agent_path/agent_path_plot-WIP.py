@@ -67,6 +67,7 @@ with open(agent_path_file, "w", newline="") as file:
 
         # Extract track nodes
         track_nodes = [np.array(segment[0]) for segment in env.unwrapped.track.path_nodes]
+        #track_nodes_agent = map(obs.kartview(),track_nodes)
 
         # Filter only nodes that are ahead of the agent
         nodes_ahead = []
@@ -91,7 +92,7 @@ with open(agent_path_file, "w", newline="") as file:
 
         # Select the second closest node
         if len(nodes_ahead) > 1:
-            second_node_pos = nodes_ahead[1][1]  # The second closest node ahead
+            second_node_pos = nodes_ahead[2][1]  # The second closest node ahead
         elif len(nodes_ahead) == 1:
             second_node_pos = nodes_ahead[0][0]  # If only one valid node ahead
         else:
