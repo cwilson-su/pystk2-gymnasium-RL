@@ -22,15 +22,15 @@ agent = AgentSpec(name="Player", use_ai=True)
 env = gym.make("supertuxkart/full-v0", render_mode="human", agent=agent, track=track_name)
 obs, _ = env.reset()
 
-# Save track paths (center, left, right) to CSV
+# Save track paths to CSV
 with open(track_data_file, "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow(["Center_X", "Center_Y", "Center_Z", "Left_X", "Left_Y", "Left_Z", "Right_X", "Right_Y", "Right_Z"])
     for i in range(len(obs["paths_start"])):
-        center_vector = np.array(obs["paths_start"][i])
+        center_vector = np.array(env.unwrapped.track.path_nodes[i][0])  # Use absolute track node positions
         track_width = obs["paths_width"][i][0]
-        direction_vector = np.array(obs["paths_end"][i]) - np.array(obs["paths_start"][i])
-        direction_vector /= np.linalg.norm(direction_vector)
+        direction_vector = np.array(env.unwrapped.track.path_nodes[i][1]) - np.array(env.unwrapped.track.path_nodes[i][0])
+        direction_vector = direction_vector / np.linalg.norm(direction_vector)
         left_offset = np.cross(direction_vector, [0, 1, 0]) * (track_width / 2)
         right_offset = -left_offset
         left_vector = center_vector + left_offset
