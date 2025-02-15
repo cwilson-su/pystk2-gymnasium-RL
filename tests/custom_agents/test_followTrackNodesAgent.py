@@ -9,7 +9,7 @@ def load_track_nodes(csv_file):
     """Load track nodes from a CSV file."""
     track_nodes = []
     with open(csv_file, "r") as file:
-        reader = csv.reader(file, delimiter=";")
+        reader = csv.reader(file, delimiter=",")
         next(reader)  # Skip the header row
         for row in reader:
             start = list(map(float, row[:3]))
