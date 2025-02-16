@@ -136,7 +136,7 @@ for i in range(len(df_agent)):
         mode='lines',
         name=f'Vector {i}',
         
-        line=dict(color='cyan', width=3),showlegend=False
+        line=dict(color='cyan', width=1),showlegend=False
     ))
 
 # Layout settings
