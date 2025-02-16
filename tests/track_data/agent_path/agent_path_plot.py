@@ -13,7 +13,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_graph", "agent_path"))
 
 # Define output CSV files
-track_name = "xr591"
+track_name = "minigolf"
 track_data_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "track_data")), f"{track_name}_track_data.csv")
 track_nodes_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "track_nodes")), f"{track_name}_track_nodes.csv")
 agent_path_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "agent_path")), f"{track_name}_agent_path.csv")

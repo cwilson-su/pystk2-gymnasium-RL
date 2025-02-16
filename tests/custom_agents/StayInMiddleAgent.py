@@ -43,6 +43,7 @@ class StayInMiddleAgent:
         """Take a single step in the environment."""
         action = self.calculate_action()
         self.obs, _, done, _, _ = self.env.step(action)
+        print(self.obs)
         return done
 
     """I've tried to make it run till 1 lap is completed, but idk where to find the info of the number of laps for now"""

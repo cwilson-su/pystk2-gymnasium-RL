@@ -10,39 +10,62 @@ class TrackVisualizer:
         self.agent_path = agent_path if agent_path else []  # Handle None case
         self.nodes = nodes if nodes else []  # Handle None case
 
+    
     def plot_track(self):
-        """Generate a 3D visualization of the track, nodes, and agent path."""
+        """Generate a 3D visualization of the track, nodes, and agent path while avoiding large gaps."""
+        max_gap=20
         fig = go.Figure()
 
-        # Track lines
-        if self.track_data:
-            fig.add_trace(go.Scatter3d(x=self.track_data['Center_X'], y=self.track_data['Center_Y'], z=self.track_data['Center_Z'],
-                                       mode='lines', name='Center Line', line=dict(color='blue')))
-            fig.add_trace(go.Scatter3d(x=self.track_data['Left_X'], y=self.track_data['Left_Y'], z=self.track_data['Left_Z'],
-                                       mode='lines', name='Left Boundary', line=dict(color='red')))
-            fig.add_trace(go.Scatter3d(x=self.track_data['Right_X'], y=self.track_data['Right_Y'], z=self.track_data['Right_Z'],
-                                       mode='lines', name='Right Boundary', line=dict(color='green')))
+        def add_trace(data, name, color):
+            """Adds a trace ensuring no large gaps between points."""
+            data = list(data)  # Convert zip object to list
+            
+            if len(data) < 2:
+                return  # Not enough points to draw lines
 
-        # Agent Path
+            x, y, z = zip(*data)
+            segments = [[], [], []]  # x, y, z for valid segments
+
+            for i in range(len(x) - 1):
+                dist = np.linalg.norm(np.array([x[i+1], y[i+1], z[i+1]]) - np.array([x[i], y[i], z[i]]))
+                if dist < max_gap:
+                    segments[0].extend([x[i], x[i+1], None])  # None breaks the line
+                    segments[1].extend([y[i], y[i+1], None])
+                    segments[2].extend([z[i], z[i+1], None])
+
+            fig.add_trace(go.Scatter3d(
+                x=segments[0], y=segments[1], z=segments[2],
+                mode='lines', line=dict(color=color, width=2), name=name
+            ))
+
+        # Plot the main track elements
+        if self.track_data is not None:
+            add_trace(list(zip(self.track_data['Center_X'], self.track_data['Center_Y'], self.track_data['Center_Z'])), "Center Line", "blue")
+            add_trace(list(zip(self.track_data['Left_X'], self.track_data['Left_Y'], self.track_data['Left_Z'])), "Left Boundary", "red")
+            add_trace(list(zip(self.track_data['Right_X'], self.track_data['Right_Y'], self.track_data['Right_Z'])), "Right Boundary", "green")
+
+        # Plot agent path if available
         if self.agent_path:
-            agent_x, agent_y, agent_z = zip(*self.agent_path)
-            fig.add_trace(go.Scatter3d(x=agent_x, y=agent_y, z=agent_z,
-                                       mode='lines', name='Agent Path', line=dict(color='orange', width=5)))
+            add_trace(self.agent_path, "Agent Path", "orange")
 
-        # Nodes
+        # Plot nodes as markers
         if self.nodes:
             node_x, node_y, node_z = zip(*self.nodes)
-            fig.add_trace(go.Scatter3d(x=node_x, y=node_y, z=node_z,
-                                       mode='markers', name='Track Nodes', marker=dict(size=2, color='purple')))
+            fig.add_trace(go.Scatter3d(
+                x=node_x, y=node_y, z=node_z,
+                mode='markers', name='Track Nodes', marker=dict(size=2, color='purple')
+            ))
 
-        # Layout
         fig.update_layout(
-            title='3D Track, Nodes & Agent Path',
-            scene=dict(xaxis_title='X', yaxis_title='Y', zaxis_title='Z'),
+            title="3D Track, Nodes & Agent Path",
+            scene=dict(xaxis_title="X", yaxis_title="Y", zaxis_title="Z"),
             margin=dict(l=0, r=0, b=0, t=40)
         )
 
         fig.show()
+
+
+    
 
 
 class TrackDataLoader:
