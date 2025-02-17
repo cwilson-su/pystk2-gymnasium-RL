@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import os
 from utils.csvRW import CSVFileManager
+import numpy as np
 
 class TrackVisualizer:
     def __init__(self, track_data, agent_path=None, nodes=None):
@@ -114,14 +115,14 @@ class TrackDataLoader:
 
 
 
-import numpy as np
+
 
 def compute_curvature(nodes):
     """
     Compute the curvature of a segment of track using centerline nodes.
     Curvature is estimated based on angle differences between consecutive nodes.
     """
-    if nodes is None or len(nodes) < 3:
+    if nodes is None or len(nodes) < 2:
         print("Not enough nodes to compute curvature!") 
         return 0  # Not enough points to compute curvature
     
@@ -143,6 +144,40 @@ def compute_curvature(nodes):
 
     #print(f"Computed Curvature: {curvature}")  
     return curvature
+
+
+
+def compute_slope(nodes):
+    """
+    Compute the slope of the track segment using two consecutive path nodes.
+    A positive slope means the kart is going uphill, while a negative slope means downhill.
+    """
+    if nodes is None or len(nodes) < 2:
+        print("Not enough nodes to compute slope!")
+        return 0  # Not enough points to compute slope
+    
+    node1, node2 = np.asarray(nodes[0]), np.asarray(nodes[1])
+    
+    dz = node2[2] - node1[2]  # Height difference (z-axis in kart referential)
+    dx = node2[0] - node1[0]  # X-axis distance
+    dy = node2[1] - node1[1]  # Y-axis distance
+    distance = np.sqrt(dx**2 + dy**2)  # Compute horizontal distance
+
+    if distance == 0:
+        return 0  # Avoid division by zero
+
+    slope = dz / distance  # Gradient of the slope
+
+    # Ensure that the slope is positive when going uphill and negative when going downhill
+    uphill = dz > 0  # True if climbing
+    adjusted_slope = slope if uphill else -abs(slope)
+
+    # print(f"Computed Slope: {adjusted_slope}")
+    return adjusted_slope
+
+
+
+
 
 def compute_angle_beta(velocity, center_vector):
     """Compute the angle beta between two vectors (velocity and center path direction)."""
