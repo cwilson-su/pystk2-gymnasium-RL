@@ -31,6 +31,9 @@ class FollowTrackNodesAgent:
 
         # Current position of the kart
         kart_position = self.obs["center_path"]  # Use current position relative to path center
+
+        print(self.obs["paths_start"])
+
         target_node = self.track_nodes[self.current_node_index]
 
         # Compute direction vector to the target node

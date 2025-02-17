@@ -8,10 +8,10 @@ if __name__ == "__main__":
     # Run the agent
     agent.run()
 """
-from StayInMiddleAgent import StayInMiddleAgent
+from StayInTheMiddleAgentNoComputing import StayInMiddleAgentNoComputing
 
 if __name__ == "__main__":
-    agent = StayInMiddleAgent(track=None, render_mode="human")
+    agent = StayInMiddleAgentNoComputing(track=None, render_mode="human")
 
     # Ensure the agent runs by consuming the generator
     for obs in agent.run():

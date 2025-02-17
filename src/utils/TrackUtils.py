@@ -125,7 +125,7 @@ def compute_curvature(nodes):
         print("Not enough nodes to compute curvature!") 
         return 0  # Not enough points to compute curvature
     
-    print("Hello from compute_curvature function")
+    #print("Hello from compute_curvature function")
     
     nodes = np.asarray(nodes)
 
@@ -141,7 +141,7 @@ def compute_curvature(nodes):
     else:
         curvature = 0
 
-    print(f"Computed Curvature: {curvature}")  
+    #print(f"Computed Curvature: {curvature}")  
     return curvature
 
 
