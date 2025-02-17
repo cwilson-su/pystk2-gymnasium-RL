@@ -144,7 +144,20 @@ def compute_curvature(nodes):
     #print(f"Computed Curvature: {curvature}")  
     return curvature
 
-
+def compute_angle_beta(velocity, center_vector):
+    """Compute the angle beta between two vectors (velocity and center path direction)."""
+    if np.linalg.norm(velocity) == 0 or np.linalg.norm(center_vector) == 0:
+        return None  # Avoid division by zero
+        
+    dot_product = np.dot(velocity, center_vector)
+    magnitude_product = np.linalg.norm(velocity) * np.linalg.norm(center_vector)
+        
+    # Compute angle in radians
+    beta_rad = np.arccos(np.clip(dot_product / magnitude_product, -1.0, 1.0))
+        
+    # Convert to degrees
+    beta_deg = np.degrees(beta_rad)
+    return beta_deg
 
 
 
