@@ -1,6 +1,35 @@
 import os
 import csv
 
+class CSVFileManager:
+    """Handles directory setup and file path generation for CSVs and graphs."""
+
+    @staticmethod
+    def get_base_directory():
+        """Returns the base directory for CSV storage."""
+        current_dir = os.path.dirname(os.path.abspath(__file__))  
+        return os.path.abspath(os.path.join(current_dir, "..", "..", "records_csv"))
+
+    @staticmethod
+    def get_file_path(track_name, category):
+        """
+        Returns the full file path for a given track and category.
+        
+        :param track_name: Name of the track.
+        :param category: One of ['track_data', 'track_nodes', 'agent_path', 'graphs']
+        :return: Absolute file path.
+        """
+        base_dir = CSVFileManager.get_base_directory()
+        valid_categories = ["track_data", "track_nodes", "agent_path", "graphs"]
+        
+        if category not in valid_categories:
+            raise ValueError(f"Invalid category '{category}'. Must be one of {valid_categories}")
+        
+        file_extension = ".csv" if category != "graphs" else ".png"
+        return os.path.join(base_dir, category, f"{track_name}_{category}{file_extension}")
+
+
+
 def setup_output(csv_filename, output_directory=None):
     """Creates the output CSV file in the specified directory."""
     if output_directory is None:

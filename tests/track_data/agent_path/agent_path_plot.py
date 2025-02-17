@@ -1,18 +1,19 @@
+import sys
 import gymnasium as gym
 import numpy as np
 import os
 import csv
 import pandas as pd
-import plotly.graph_objects as go
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..", "src")))
 from pystk2_gymnasium import AgentSpec
-from pystk2_gymnasium.utils import rotate  
+from utils.TrackUtils import TrackVisualizer  
 
 # Set output folder
 current_dir = os.path.dirname(os.path.abspath(__file__))  
 output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_graph", "agent_path"))
 
 # Define output CSV files
-track_name = "xr591"
+track_name = "minigolf"
 track_data_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "track_data")), f"{track_name}_track_data.csv")
 track_nodes_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "track_nodes")), f"{track_name}_track_nodes.csv")
 agent_path_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "agent_path")), f"{track_name}_agent_path.csv")
@@ -46,59 +47,49 @@ with open(track_nodes_file, "w", newline="") as file:
         start, end = segment
         writer.writerow([*start, *end])
 
-# Track agent path with absolute world positions
+# Track agent path
 with open(agent_path_file, "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow(["Agent_X", "Agent_Y", "Agent_Z"])
     done = False
+    agent_positions = []
+
     while not done:
         action = env.action_space.sample()
         obs, _, terminated, truncated, _ = env.step(action)
-        agent_abs_pos = np.array(env.unwrapped.world.karts[0].location)  # <----------- Fetch dynamically updated position /!\ DO NOT DECLARE KARTS[0] AND USE IT LATER, ELSE THE LOCATION WON'T BE UPDATED!!!
-        '''
-        Important note on here-above line:
-        env.unwrapped.world.karts[0] is re-fetched every step to ensure the position is updated dynamically.
-        The issue was that kart was a stale reference to the kart object and wasn’t automatically refreshing.
-        '''
-                
+        agent_abs_pos = np.array(env.unwrapped.world.karts[0].location)
+
+        agent_positions.append(agent_abs_pos)
         writer.writerow(agent_abs_pos)
+
         done = terminated or truncated
 
-try:
-    env.close()
-finally:
-    del env
+env.close()
 
-# Load CSVs for visualization
+# Load CSVs
 df_track = pd.read_csv(track_data_file)
 df_nodes = pd.read_csv(track_nodes_file)
 df_agent = pd.read_csv(agent_path_file)
 
-# Create Plotly 3D figure
-fig = go.Figure()
+# Convert track data
+track_data = {
+    "Center_X": df_track["Center_X"],
+    "Center_Y": df_track["Center_Y"],
+    "Center_Z": df_track["Center_Z"],
+    "Left_X": df_track["Left_X"],
+    "Left_Y": df_track["Left_Y"],
+    "Left_Z": df_track["Left_Z"],
+    "Right_X": df_track["Right_X"],
+    "Right_Y": df_track["Right_Y"],
+    "Right_Z": df_track["Right_Z"]
+}
 
-# Plot track boundaries
-fig.add_trace(go.Scatter3d(x=df_track['Center_X'], y=df_track['Center_Y'], z=df_track['Center_Z'], mode='lines', name='Center Line', line=dict(color='blue')))
-fig.add_trace(go.Scatter3d(x=df_track['Left_X'], y=df_track['Left_Y'], z=df_track['Left_Z'], mode='lines', name='Left Boundary', line=dict(color='red')))
-fig.add_trace(go.Scatter3d(x=df_track['Right_X'], y=df_track['Right_Y'], z=df_track['Right_Z'], mode='lines', name='Right Boundary', line=dict(color='green')))
+# Convert nodes
+nodes = list(zip(df_nodes["Start_X"], df_nodes["Start_Y"], df_nodes["Start_Z"]))
 
-# Plot track nodes
-fig.add_trace(go.Scatter3d(x=df_nodes['Start_X'], y=df_nodes['Start_Y'], z=df_nodes['Start_Z'], mode='markers', name='Track Nodes', marker=dict(color='purple', size=3)))
+# Convert agent path
+agent_positions = list(zip(df_agent["Agent_X"], df_agent["Agent_Y"], df_agent["Agent_Z"]))
 
-# Plot agent path with corrected world coordinates
-fig.add_trace(go.Scatter3d(x=df_agent['Agent_X'], y=df_agent['Agent_Y'], z=df_agent['Agent_Z'], mode='lines', name='Agent Path', line=dict(color='orange',width=5)))
-
-# Layout settings
-fig.update_layout(
-    title=f'3D Track, Nodes & Agent Path - {track_name}',
-    scene=dict(xaxis_title='X', yaxis_title='Y', zaxis_title='Z'),
-    margin=dict(l=0, r=0, b=0, t=40)
-)
-
-# Save plot as PNG
-output_image = os.path.join(output_folder, f"{track_name}_track_agent_path_visualization.png")
-fig.write_image(output_image)
-print(f"Graph saved as {output_image}")
-
-fig.show()
-fig.write_html(os.path.join(output_folder, f"{track_name}_track_agent_path_visualization.html"), auto_open=True)
+# Use TrackVisualizer to plot everything
+visualizer = TrackVisualizer(track_data=track_data, agent_path=agent_positions, nodes=nodes)
+visualizer.plot_track()
