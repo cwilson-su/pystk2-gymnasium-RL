@@ -5,7 +5,7 @@ from customAgents.MedianAgent import MedianAgent
 
 
 if __name__ == "__main__":
-    agent = MedianAgent(track=None, render_mode="human", plot=False) #by default, path_lookahead is 3
+    agent = MedianAgent(track='black_forest', render_mode="human", plot=False) #by default, path_lookahead is 3
     
     # agent = MedianAgent(track=None, render_mode="human", path_lookahead=2) # min path_lookahead is 2
     
