@@ -35,15 +35,15 @@ class OptimizedMedianAgent:
 
         path_ends = self.obs["paths_end"][:self.path_lookahead]
         curvature = self.euler_spiral_curvature(path_ends)
-        slope = compute_slope(path_ends[:2])
-        angle_beta = compute_angle_beta(self.obs["velocity"], self.obs["center_path"])
+        #slope = compute_slope(path_ends[:2])
+        #angle_beta = compute_angle_beta(self.obs["velocity"], self.obs["center_path"])
         
         direction_to_target = path_end - kart_front
         steering = 0.3 * direction_to_target[0]
 
         # Nitro amélioré : Activation dans les courbes larges et lignes droites
         use_nitro = abs(curvature) < 0.5
-
+        
         agent_abs_pos = np.array(self.env.unwrapped.world.karts[0].location)
         self.agent_positions.append(agent_abs_pos)
 
