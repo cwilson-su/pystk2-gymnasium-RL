@@ -41,7 +41,7 @@ class OptimizedMedianAgent:
         direction_to_target = path_end - kart_front
         steering = 0.3 * direction_to_target[0]
 
-        # Nitro amélioré : Activation dans les courbes larges et lignes droites
+        
         use_nitro = abs(curvature) < 0.5
         
         agent_abs_pos = np.array(self.env.unwrapped.world.karts[0].location)
