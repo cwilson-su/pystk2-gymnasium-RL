@@ -65,8 +65,8 @@ class ItemsAgent:
         # Combine base steering with item-based adjustment
         steering += best_move
 
-        #acceleration = max(0.1, 1 - abs(curvature) + max(0, slope))
-        acceleration = 0.3
+        acceleration = max(0.1, 1 - abs(curvature) + max(0, slope))
+        # acceleration = 0.3
         nitro_threshold = 0.02
         use_nitro = abs(curvature) < nitro_threshold
         drift_threshold = 40

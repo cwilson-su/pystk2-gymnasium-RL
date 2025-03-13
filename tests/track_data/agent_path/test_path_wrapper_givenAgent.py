@@ -7,6 +7,6 @@ from utils.TrackPathWrapper import plot_agent_path_with_track
 
 
 agent = AgentSpec(name="Player", use_ai=True)
-env = gym.make("supertuxkart/full-v0", render_mode="human", agent=agent, track="minigolf")
+env = gym.make("supertuxkart/full-v0", render_mode="human", agent=agent, track=None)
 
 plot_agent_path_with_track(agent, env, "minigolf")
