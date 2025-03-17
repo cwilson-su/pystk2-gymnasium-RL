@@ -6,7 +6,7 @@
 
 _Le rapport de mi-semestre a été envoyé à Fabrice Kordon Vendredi 14 Mars._
 _Nous avons essayé de suivre vos conseils pour améliorer notre rapport._
-_Nous sommes vraiment débordé ces derniers temps entre le rapport de mi-projet, notre rapport de mi-projet en Technologie du web et notre TME solo en Génie Logiciel. C'est pour cela qu'on ne pourra pas travaillé énormément cette semaine._
+_Nous sommes vraiment débordé ces derniers temps entre le rapport de mi-projet, notre rapport de mi-projet en Technologie du web à rendre aujourd'hui(ce qui nous a pris une bonne partie de notre weekend) et notre TME solo en Génie Logiciel(jeudi après-midi). C'est pour cela qu'on ne pourra pas travaillé énormément cette semaine._
 
 ## 1. Organisation
 
