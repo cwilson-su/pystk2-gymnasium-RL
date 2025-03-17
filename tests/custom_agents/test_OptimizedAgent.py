@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..",
 from customAgents.OptimizedMedianAgent import OptimizedMedianAgent
 
 if __name__ == "__main__":
-    agent = OptimizedMedianAgent(track= 'black_forest', render_mode="human", plot=True)  
+    agent = OptimizedMedianAgent(track= "stk_enterprise", render_mode="human", plot=True)  
     
     
     for obs in agent.run():
