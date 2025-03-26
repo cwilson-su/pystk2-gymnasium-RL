@@ -70,8 +70,6 @@ Les identifiants de type sont des entiers (par exemple, `0 = BANANA`, `1 = NITRO
 
 Enfin, certaines méthodes utiles comme `getAvoidancePoint()` existent dans le backend C++ pour aider les IA à contourner proprement les objets, mais ne sont **pas exposées dans l’interface Python**. Cela limite les possibilités d’évitement précis à moins de recompiler le binding.
 
----
-
 ### Étapes de mise en œuvre
 
 1. **Observation des objets**
@@ -93,8 +91,6 @@ Enfin, certaines méthodes utiles comme `getAvoidancePoint()` existent dans le b
 4. **Action de pilotage**
    - Combinaison de la **direction du chemin principal** (centerline) et de l’ajustement latéral.
    - Pas de drift, pas de nitro : on garde un contrôle simple pour observer le comportement.
-
----
 
 ### Difficultés rencontrées
 
