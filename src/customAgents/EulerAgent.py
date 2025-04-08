@@ -17,6 +17,9 @@ class EulerAgent:
         self.agent.reset()
         self.obs = self.agent.obs
 
+    def endOfTrack(self):
+        return self.agent.endOfTrack()
+
     def euler_spiral_curvature(self, path_ends):
         if len(path_ends) < 3:
             return 0.01
@@ -49,6 +52,10 @@ class EulerAgent:
         return base_action
     ###
     def calculate_action(self, obs):
+        base_action = self.agent.calculate_action(obs)
+        if self.agent.endOfTrack():
+            return base_action
+
         path_ends = obs["paths_end"][:self.path_lookahead]
         path_end = path_ends[-1]
         kart_front = obs["front"]

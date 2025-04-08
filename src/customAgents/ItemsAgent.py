@@ -55,6 +55,9 @@ class ItemsAgent:
         self.agent.reset()
         self.obs = self.agent.obs
 
+    def endOfTrack(self):
+        return self.agent.endOfTrack()
+
     def _get_base_action(self, obs):
         """Get the base action from the wrapped agent."""
         return self.agent.calculate_action(obs)
@@ -151,9 +154,10 @@ class ItemsAgent:
             3. Strategic powerup usage.
         """
         action = self._get_base_action(obs)
-        action = self._adjust_for_item(obs, action)
-        action = self._apply_powerup_strategy(obs, action)
-        action["steer"] = np.clip(action["steer"], -1, 1)
+        if not self.agent.endOfTrack():
+            action = self._adjust_for_item(obs, action)
+            action = self._apply_powerup_strategy(obs, action)
+            action["steer"] = np.clip(action["steer"], -1, 1)
         return action
 
     def step(self):

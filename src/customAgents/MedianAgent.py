@@ -7,10 +7,15 @@ class MedianAgent:
         self.path_lookahead = path_lookahead
         self.agent_positions = []
         self.obs = None
+        self.isEnd = False
+        self.threshold = 30
 
     def reset(self):
         self.obs, _ = self.env.reset()
         self.agent_positions = []
+
+    def endOfTrack(self):
+        return self.isEnd
 
     def calculate_action(self, obs):
         # Basic path-following based on the centerline.
@@ -26,6 +31,22 @@ class MedianAgent:
         acceleration = max(0.5, 1 - abs(curvature) + max(0, slope))
         use_drift = abs(curvature) > 40
         use_nitro = abs(curvature) < 0.02
+
+        distance = np.linalg.norm(self.obs["paths_end"][self.path_lookahead] - path_end)
+        if distance > self.threshold: 
+            self.isEnd = True
+
+        if self.isEnd:
+            action = {
+                "acceleration": 1,
+                "steer": 0,
+                "brake": False,
+                "drift": False,
+                "nitro": True,
+                "rescue": True,
+                "fire": False
+            }
+            return action
 
         action = {
             "acceleration": np.clip(acceleration, 0.5, 1),
