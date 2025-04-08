@@ -8,7 +8,7 @@ from customAgents.ItemsAgent import ItemsAgent
 from utils.ItemObservationWrapper import ItemObservationWrapper  
 
 agent_spec = AgentSpec(name="ItemsExpert", rank_start=0, use_ai=False)
-env = STKRaceEnv(agent=agent_spec, track="black_forest", render_mode="human")
+env = STKRaceEnv(agent=agent_spec, track=None, render_mode="human")
 env = STKRaceEnv(agent=agent_spec, track=None, render_mode="human")
 # Apply the custom observation wrapper to enrich item data.
 env = ItemObservationWrapper(env)
