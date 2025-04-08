@@ -11,7 +11,7 @@ from customAgents.ItemsAgent import ItemsAgent
 from pystk2_gymnasium.envs import STKRaceMultiEnv, AgentSpec
 import numpy as np
 
-# Patch for AgentSpec if necessary, as in your existing test_dual_agents.py
+# Patch for AgentSpec if necessary
 def agent_spec_hash(self):
     return hash((self.rank_start, self.use_ai, self.name, self.camera_mode))
 AgentSpec.__hash__ = agent_spec_hash
