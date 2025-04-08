@@ -33,7 +33,7 @@ class EulerAgent:
         curvature = np.clip(curvature * 2.0, 0.01, 1.0)
         return curvature
 
-    def calculate_action(self, obs):
+    ###def calculate_action(self, obs):
         # Get the base action from the wrapped agent.
         base_action = self.agent.calculate_action(obs)
         path_ends = obs["paths_end"][:self.path_lookahead]
@@ -47,7 +47,29 @@ class EulerAgent:
         base_action["acceleration"] = max(0.5, 1 - abs(curvature) + max(0, slope))
         base_action["nitro"] = (abs(curvature) < 0.05)
         return base_action
+    ###
+    def calculate_action(self, obs):
+        path_ends = obs["paths_end"][:self.path_lookahead]
+        path_end = path_ends[-1]
+        kart_front = obs["front"]
 
+        curvature = float(self.euler_spiral_curvature(path_ends))
+        slope = float(compute_slope(path_ends[:2]))
+
+        acceleration = max(0.5, 1 - abs(curvature) + max(0, slope))
+        direction_to_target = path_end - kart_front
+        steering = 0.4 * direction_to_target[0] / (1.0 + abs(curvature) * 0.5)
+        use_nitro = abs(curvature) < 0.05
+
+        return {
+            "acceleration": np.clip(acceleration, 0.5, 1),
+            "steer": np.clip(steering, -1, 1),
+            "brake": False,
+            "drift": False,
+            "nitro": use_nitro,
+            "rescue": True,
+            "fire": False
+        }
     def step(self):
         action = self.calculate_action(self.obs)
         self.obs, reward, done, truncated, info = self.env.step(action)
