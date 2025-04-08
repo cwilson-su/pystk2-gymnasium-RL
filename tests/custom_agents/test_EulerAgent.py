@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for EulerAgent in a solo race on the specified track.
-EulerAgent decorates a MedianAgent.
+Test script for EulerAgent (decorating a MedianAgent) on the 'black_forest' track.
 """
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "src")))
@@ -11,7 +10,6 @@ from pystk2_gymnasium.envs import STKRaceEnv, AgentSpec
 
 agent_spec = AgentSpec(name="Euler", rank_start=0, use_ai=False)
 env = STKRaceEnv(agent=agent_spec, track="black_forest", render_mode="human")
-# Create a base MedianAgent and then wrap it with EulerAgent.
 base_agent = MedianAgent(env, path_lookahead=3)
 euler_agent = EulerAgent(base_agent)
 

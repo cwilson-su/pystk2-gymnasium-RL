@@ -73,7 +73,7 @@ class ItemsAgent:
         target_type = obs.get("target_item_type", 0)
         # Get human-readable name for debugging.
         item_name = ITEM_TYPE_NAMES.get(target_type, "UNKNOWN")
-        print(f"Item target: {item_name}, distance {target_distance:.2f}, angle {target_angle:.2f}")
+        # print(f"Item target: {item_name}, distance {target_distance:.2f}, angle {target_angle:.2f}")
         
         # Define which items (by type code) are considered good and which bad.
         good_types = [0, 2, 3, 6]  # e.g., BONUS_BOX, NITRO_BIG, NITRO_SMALL, EASTER_EGG
@@ -83,12 +83,12 @@ class ItemsAgent:
             target_item_pos = obs.get("target_item_position", np.array([0, 0, 0]))
             if target_type in good_types:
                 action["steer"] += 0.1 * target_item_pos[0]
-                print("Approaching good item.")
+                # print("Approaching good item.")
             elif target_type in bad_types:
                 action["steer"] -= 0.1 * target_item_pos[0]
-                print("Avoiding bad item.")
-        else:
-            print("No target item in close range; following base path.")
+                # print("Avoiding bad item.")
+        # else:
+        #    print("No target item in close range; following base path.")
         return action
 
     def _apply_powerup_strategy(self, obs, action):
@@ -124,7 +124,7 @@ class ItemsAgent:
             # Use speed boost only when the track is nearly straight.
             if curvature < 0.05:
                 fire = True
-                print("Using speed boost powerup on a straight line.")
+                # print("Using speed boost powerup on a straight line.")
         elif powerup in WEAPON_POWERUPS:
             # For weapon-type powerups, check for opponents.
             opponents = obs.get("karts_position", [])
@@ -133,12 +133,12 @@ class ItemsAgent:
                 opp_distance = np.linalg.norm(opp)
                 if opp_distance < 10 and opp[2] > 0:
                     fire = True
-                    print("Using weapon powerup on a nearby opponent.")
+                    # print("Using weapon powerup on a nearby opponent.")
                     break
         elif powerup != 0:
             # For other powerups, use them immediately.
             fire = True
-            print("Using miscellaneous powerup.")
+            # print("Using miscellaneous powerup.")
 
         action["fire"] = fire
         return action

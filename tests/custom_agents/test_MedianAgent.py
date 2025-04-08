@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for MedianAgent in a solo race on the specified track.
+Test script for the basic MedianAgent on the 'black_forest' track.
 """
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "src")))
