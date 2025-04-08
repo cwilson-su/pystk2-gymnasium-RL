@@ -1,100 +1,124 @@
 import numpy as np
-from pystk2_gymnasium.envs import STKRaceEnv
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.TrackUtils import compute_curvature, compute_slope
+
+# Mapping of item type codes to names for debug outputs
+ITEM_TYPE_NAMES = {
+    0: "BONUS_BOX",
+    1: "BANANA",
+    2: "NITRO_BIG",
+    3: "NITRO_SMALL",
+    4: "BUBBLEGUM",
+    6: "EASTER_EGG"
+}
 
 class ItemsAgent:
-    """Agent that follows the track while avoiding ALL items (with peripheral vision)."""
-    def __init__(self, track, render_mode=None, num_kart=2, path_lookahead=3, forecast_distance=5, peripheral_angle=30):
-        self.env = STKRaceEnv(track=track, render_mode=render_mode, num_kart=num_kart)
+    """
+    An agent similar to EulerAgent but augmented with the ability to 'see' items,
+    and to use any powerup it possesses immediately.
+    
+    It uses both base path-following behavior and enriched observations (such as
+    target item position, distance, angle, and type) to decide whether to approach
+    or avoid an item. In addition, if the observation indicates that a powerup is available,
+    the agent will use it by setting the fire flag to True.
+    """
+    def __init__(self, env, path_lookahead=3):
+        # The agent receives the environment so that only one simulation runs.
+        self.env = env
         self.path_lookahead = path_lookahead
-        self.forecast_distance = forecast_distance  # Distance to look ahead for items
-        self.peripheral_angle = np.radians(peripheral_angle)  # Peripheral vision angle in radians
-        self.obs = None
         self.agent_positions = []
+        self.obs = None
 
     def reset(self):
-        """Resets the environment and obtains the initial observation."""
+        """Resets the environment and initializes the agent."""
         self.obs, _ = self.env.reset()
         self.agent_positions = []
 
-    def is_in_peripheral_zone(self, item_pos, kart_front):
-        """Check if an item is within the peripheral vision zone."""
-        # Compute the direction vector to the item
-        direction_to_item = item_pos / np.linalg.norm(item_pos)
-        kart_direction = kart_front / np.linalg.norm(kart_front)
-        
-        # Compute angle between agent's direction and item
-        angle = np.arccos(np.clip(np.dot(direction_to_item, kart_direction), -1.0, 1.0))
-        return angle < self.peripheral_angle
-
     def calculate_action(self):
-        """Compute the action to stay on track and handle item-based decisions."""
-        if self.obs is None:
-            return {}
-
-        path_end = self.obs["paths_end"][self.path_lookahead - 1]
-        kart_front = self.obs["front"]
-
-        path_ends = self.obs["paths_end"][:self.path_lookahead]
-        curvature = compute_curvature(path_ends)
-        slope = compute_slope(path_ends[:2])
-
-        # Base steering logic (like MedianAgent)
+        """
+        Computes the action based on a combination of base path-following (as in EulerAgent),
+        augmented item observations (target_item_position, target_item_distance, target_item_angle,
+        and target_item_type), and the current powerup held.
+        
+        If a target item is close, the agent will either approach it (if it's a 'good' item)
+        or avoid it (if it's a 'bad' item). Additionally, if the agent has a powerup (i.e. powerup != 0),
+        the agent will use it by setting the 'fire' flag to True.
+        """
+        obs = self.obs
+        
+        # --- Base Path-Following ---
+        # Use the centerline's target node from the observation
+        path_ends = obs["paths_end"][:self.path_lookahead]
+        path_end = path_ends[-1]
+        kart_front = obs["front"]
         direction_to_target = path_end - kart_front
-        steering = 0.2 * direction_to_target[0]
+        base_steering = 0.4 * direction_to_target[0]
+        
+        # Compute a base acceleration (you can refine this further)
+        curvature = 0.1  # Placeholder value; you can compute actual curvature if desired
+        acceleration = max(0.5, 1 - abs(curvature))
+        
+        steering = base_steering
 
-        # Item avoidance logic (Avoid ALL items with peripheral vision)
-        items_position = self.obs.get("items_position", [])
-        paths_width = self.obs.get("paths_width", [1])[0]
+        # --- Augmented Item Perception ---
+        # The observation wrapper should add the following keys:
+        #   target_item_position, target_item_distance, target_item_angle, target_item_type
+        target_distance = obs.get("target_item_distance", np.array([np.inf]))[0]
+        target_angle = obs.get("target_item_angle", np.array([0]))[0]
+        target_type = obs.get("target_item_type", 0)
+        # For debug: get the human-readable item name.
+        item_name = ITEM_TYPE_NAMES.get(target_type, "UNKNOWN")
+        print(f"Item target: {item_name}, distance {target_distance:.2f}, angle {target_angle:.2f}")
+        
+        # Define which item types are good and which are bad.
+        # Example: BONUS_BOX, NITRO_BIG, NITRO_SMALL, EASTER_EGG are good; BANANA and BUBBLEGUM are bad.
+        good_types = [0, 2, 3, 6]
+        bad_types = [1, 4]
+        
+        if target_distance < 10:
+            target_item_pos = obs.get("target_item_position", np.array([0, 0, 0]))
+            if target_type in good_types:
+                # Steer toward the item by adding a small steering offset based on lateral (X) component.
+                steering += 0.1 * target_item_pos[0]
+                print("Approaching good item.")
+            elif target_type in bad_types:
+                # Steer away from the item by subtracting a small steering offset.
+                steering -= 0.1 * target_item_pos[0]
+                print("Avoiding bad item.")
+        #else:
+        #    print("No target item in close range; following base path.")
 
-        # Item detection logic
-        best_move = 0  # Default: no movement adjustment
-        for item_pos in items_position:
-            # Check if item is within forecast distance
-            distance_to_item = np.linalg.norm(item_pos)
-            if distance_to_item < self.forecast_distance and self.is_in_peripheral_zone(item_pos, kart_front):
-                # Always avoid items (for testing)
-                if item_pos[0] > 0 and item_pos[0] < paths_width / 2:
-                    best_move = -0.3  # Move left more aggressively
-                elif item_pos[0] < 0 and abs(item_pos[0]) < paths_width / 2:
-                    best_move = 0.3  # Move right more aggressively
+        # --- Powerup Usage ---
+        # Check if the observation indicates that the kart has a powerup.
+        # Typically, a powerup value of 0 means no powerup.
+        if obs.get("powerup", 0) != 0:
+            fire = True
+            print(">>>>>>> Using powerup.")
+        else:
+            fire = False
 
-        # Combine base steering with item-based adjustment
-        steering += best_move
-
-        acceleration = max(0.1, 1 - abs(curvature) + max(0, slope))
-        # acceleration = 0.3
-        nitro_threshold = 0.02
-        use_nitro = abs(curvature) < nitro_threshold
-        drift_threshold = 40
-        use_drift = abs(curvature) > drift_threshold
-
-        # Track agent position for visualization
+        # Final adjustments and clipping.
+        steering = np.clip(steering, -1, 1)
+        
+        # Record current position for visualization.
         agent_abs_pos = np.array(self.env.unwrapped.world.karts[0].location)
         self.agent_positions.append(agent_abs_pos)
-
+        
         action = {
-            "acceleration": np.clip(acceleration, 0.1, 1),
-            "steer": np.clip(steering, -1, 1),
+            "acceleration": np.clip(acceleration, 0.5, 1),
+            "steer": steering,
             "brake": False,
-            "drift": use_drift,
-            "nitro": use_nitro,
+            "drift": False,
+            "nitro": False,
             "rescue": True,
-            "fire": False,
+            "fire": fire
         }
         return action
 
     def step(self):
-        """Take a single step in the environment."""
         action = self.calculate_action()
-        self.obs, _, done, _, _ = self.env.step(action)
+        self.obs, reward, done, truncated, info = self.env.step(action)
         return done
 
     def run(self, steps=10000):
-        """Run the agent for a fixed number of steps."""
         self.reset()
         for step in range(steps):
             done = self.step()
