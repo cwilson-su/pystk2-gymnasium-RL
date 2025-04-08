@@ -11,7 +11,7 @@ ITEM_TYPE_NAMES = {
 }
 
 # Mapping of powerup types.
-# According to the provided comments in custom_wrapper.py:
+# According to the STK documentation,
 # Powerups:
 #   'NOTHING': 0,
 #   'BUBBLEGUM': 1,

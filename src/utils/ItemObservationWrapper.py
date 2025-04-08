@@ -1,6 +1,11 @@
 import numpy as np
 import gymnasium as gym
 
+"""
+ItemObservationWrapper: An observation wrapper that enriches the observation
+- inspired from Nazim Bendib and Nassim Boudjenah's work on item-based decision making.
+"""
+
 class ItemObservationWrapper(gym.ObservationWrapper):
     """
     Enriches the observation with computed item-related variables.
