@@ -32,7 +32,7 @@ class MedianAgent:
         use_drift = abs(curvature) > 40
         use_nitro = abs(curvature) < 0.02
 
-        distance = np.linalg.norm(self.obs["paths_end"][self.path_lookahead] - path_end)
+        distance = np.linalg.norm(obs["paths_end"][self.path_lookahead] - path_end)
         if distance > self.threshold: 
             self.isEnd = True
 

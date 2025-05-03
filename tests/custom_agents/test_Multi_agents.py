@@ -10,6 +10,7 @@ The simulation runs in the STKRaceMultiEnv on the "black_forest" track with thre
 
 import sys, os
 import numpy as np
+import pystk2
 
 # Append the "src" folder to sys.path so that custom modules can be imported.
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..", "src")))
@@ -25,15 +26,18 @@ def agent_spec_hash(self):
 AgentSpec.__hash__ = agent_spec_hash
 
 # Create three agent specifications with different starting positions.
+CameraMode = pystk2.PlayerConfig.CameraMode
 agents_specs = [
-    AgentSpec(name="Median", rank_start=0, use_ai=False),
-    AgentSpec(name="Euler",  rank_start=1, use_ai=False),
-    AgentSpec(name="Items",  rank_start=2, use_ai=False)
+    AgentSpec(name="Median", rank_start=0, use_ai=False, camera_mode=CameraMode.OFF),
+    AgentSpec(name="Euler",  rank_start=1, use_ai=False, camera_mode=CameraMode.OFF),
+    AgentSpec(name="Items",  rank_start=2, use_ai=False, camera_mode=CameraMode.OFF),
 ]
+
+print("Agent specifications:" + str(agents_specs))  
 
 # Create the multi-agent environment.
 # IMPORTANT: pass num_kart=3 so that the environment expects three actions.
-env = STKRaceMultiEnv(agents=agents_specs, track="black_forest", render_mode="human", num_kart=3)
+env = STKRaceMultiEnv(agents=agents_specs, track="xr591", render_mode="human", num_kart=4)
 
 # Instantiate the agents:
 # Agent 0 uses a plain MedianAgent.
