@@ -29,7 +29,7 @@ agents_specs = [
 ]
 
 # Create the multi-agent environment for two karts.
-env = STKRaceMultiEnv(agents=agents_specs, track="black_forest", render_mode="human", num_kart=3)
+env = STKRaceMultiEnv(agents=agents_specs, track="black_forest", render_mode="human", num_kart=2)
 
 # Instantiate the agents.
 # Agent 0: EulerAgent wraps a fresh MedianAgent.
