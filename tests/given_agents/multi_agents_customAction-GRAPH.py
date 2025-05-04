@@ -5,7 +5,7 @@ import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "utils")))
 from csvRW import setup_output, read_csv_data
-from plot import plt_multi_agent_plot
+from plot import plt_multi_agent_plot, plt_multi_agent_plot_pos
 
 # Define paths
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_csv","given_agents"))
@@ -27,6 +27,8 @@ print("Track Name:", track_name)
 steps = {agent: list(range(len(data_dict["Reward"][agent]))) for agent in data_dict["Reward"].keys()}
 rewards = data_dict.get("Reward", [])
 positions = data_dict.get("Position", [])
+for key , lst in positions.items():
+    positions[key] = [int(x) for x in lst]
 distances = data_dict.get("Distance", [])
 velocities = data_dict.get("Velocity", [])
 # Plot reward vs step
@@ -36,7 +38,7 @@ plt_multi_agent_plot(steps, rewards, "Steps", "Reward", "Multi-Agent: Reward vs 
 
 # Plot position vs step
 
-plt_multi_agent_plot(steps, positions, "Steps", "Position", "Multi-Agent: Position vs Steps",
+plt_multi_agent_plot_pos(steps, positions, "Steps", "Position", "Multi-Agent: Position vs Steps",
                        os.path.join(graph_folder, f"{track_name}_multi_agents_position_graph.png"))
 
 # Plot distance vs step
