@@ -8,7 +8,7 @@ class MedianAgent:
         self.agent_positions = []
         self.obs = None
         self.isEnd = False
-        self.threshold = 50
+        self.threshold = 100
 
     def reset(self):
         self.obs, _ = self.env.reset()
