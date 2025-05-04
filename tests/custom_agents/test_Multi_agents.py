@@ -28,21 +28,20 @@ agents_specs = [
     AgentSpec(name="Items", rank_start=1, use_ai=False),      # For the ItemsAgent
     AgentSpec(name="Items1", rank_start=2, use_ai=False),     # For the ItemsAgent1
     AgentSpec(name="Median", rank_start=3, use_ai=False),
-    AgentSpec(name="Median1", rank_start=4, use_ai=False)
 ]
 
 # Create the multi-agent environment for N karts.
-env = STKRaceMultiEnv(agents=agents_specs, track="xr591", render_mode="human", num_kart=5)
+env = STKRaceMultiEnv(agents=agents_specs, track="black_forest", render_mode="human", num_kart=4)
 
 # Instantiate the agents.
 # Agent 0: EulerAgent wraps a fresh MedianAgent.
 euler_agent = EulerAgent(MedianAgent(env, path_lookahead=3))
 # Agent 1,2: ItemsAgent wraps an EulerAgent that itself wraps a fresh MedianAgent.
 items_agent = ItemsAgent(EulerAgent(MedianAgent(env, path_lookahead=3)))
-items_agent1 = ItemsAgent(EulerAgent(MedianAgent(env, path_lookahead=3)))
+items_agent1 = ItemsAgent(MedianAgent(env, path_lookahead=3))
 # Agent 3,4: plain MedianAgent.
 median_agent = MedianAgent(env, path_lookahead=3)
-median_agent1 = MedianAgent(env, path_lookahead=3)
+
 def main():
     obs, _ = env.reset()
     done = False
@@ -52,7 +51,6 @@ def main():
         actions["1"] = items_agent.calculate_action(obs["1"])
         actions["2"] = items_agent1.calculate_action(obs["2"])
         actions["3"] = median_agent.calculate_action(obs["3"])
-        actions["4"] = median_agent1.calculate_action(obs["4"])
         obs, reward, done, truncated, info = env.step(actions)
         if done or truncated:
             break
