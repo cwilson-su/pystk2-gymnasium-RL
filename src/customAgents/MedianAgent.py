@@ -8,7 +8,7 @@ class MedianAgent:
         self.agent_positions = []
         self.obs = None
         self.isEnd = False
-        self.threshold = 30
+        self.threshold = 50
 
     def reset(self):
         self.obs, _ = self.env.reset()
@@ -34,6 +34,7 @@ class MedianAgent:
 
         distance = np.linalg.norm(obs["paths_end"][self.path_lookahead] - path_end)
         if distance > self.threshold: 
+            print("End of track detected.", distance)
             self.isEnd = True
 
         if self.isEnd:
