@@ -8,8 +8,8 @@ from customAgents.MedianAgent import MedianAgent
 from pystk2_gymnasium.envs import STKRaceEnv, AgentSpec
 
 agent_spec = AgentSpec(name="Median", rank_start=0, use_ai=False)
-env = STKRaceEnv(agent=agent_spec, track="stk_enterprise", render_mode="human")
-median_agent = MedianAgent(env, path_lookahead=3)
+env = STKRaceEnv(agent=agent_spec, track="snowtuxpeak", render_mode="human")
+median_agent = MedianAgent(env, path_lookahead=2)
 
 def main():
     obs, _ = env.reset()

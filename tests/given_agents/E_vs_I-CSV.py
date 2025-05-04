@@ -16,25 +16,27 @@ from pystk2_gymnasium.envs import STKRaceMultiEnv, AgentSpec
 
 # Define correct directories
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_csv","given_agents"))
-csv_file = setup_output("multi_agents_custom_Action.csv", output_directory=csv_base_dir)
+csv_file = setup_output("E_vs_I.csv", output_directory=csv_base_dir)
 csv_file_Track_Name = setup_output("Track_Name.csv", output_directory=csv_base_dir)
 
 # Write column titles (only once at the start of the script)
 write_csv_header(csv_file, "Agent", "Reward", "Terminated", "Position", "Distance", "Velocity")
 write_csv_header(csv_file_Track_Name, "Track_Name")
 
+#AgentSpec(name="Euler", rank_start=0, use_ai=False),   # For the EulerAgent
+#AgentSpec(name="Items", rank_start=1, use_ai=False),      # For the ItemsAgent
+#AgentSpec(name="Items1", rank_start=2, use_ai=False),     # For the ItemsAgent1
+#AgentSpec(name="Median", rank_start=3, use_ai=False),
+
 if __name__ == '__main__':
     # Create 5 agent specifications.
     agents_specs = [
         AgentSpec(name="Euler", rank_start=0, use_ai=False),   # For the EulerAgent
         AgentSpec(name="Items", rank_start=1, use_ai=False),      # For the ItemsAgent
-        AgentSpec(name="Items1", rank_start=2, use_ai=False),     # For the ItemsAgent1
-        AgentSpec(name="Median", rank_start=3, use_ai=False),
-        AgentSpec(name="Bot", rank_start=4, use_ai=True)
     ]
 
     # Create the multi-agent environment for N karts.
-    env = STKRaceMultiEnv(agents=agents_specs, track="fortmagma", render_mode="human", num_kart=5, difficulty=1)
+    env = STKRaceMultiEnv(agents=agents_specs, track="fortmagma", render_mode="human", num_kart=2, difficulty=1)
 
     # Instantiate the agents.
     # Agent 0: EulerAgent wraps a fresh MedianAgent.
@@ -42,7 +44,7 @@ if __name__ == '__main__':
     # Agent 1,2: ItemsAgent wraps an EulerAgent that itself wraps a fresh MedianAgent.
     items_agent = ItemsAgent(EulerAgent(MedianAgent(env, path_lookahead=2)))
     items_agent1 = ItemsAgent(MedianAgent(env, path_lookahead=2))
-    # Agent 3,4: plain MedianAgent.
+    # Agent 3: plain MedianAgent.
     median_agent = MedianAgent(env, path_lookahead=2)
     ix = 0
     done = False
@@ -56,13 +58,15 @@ if __name__ == '__main__':
     while not done and ix < 1000:
         ix += 1
         print("Step:", ix)
+
+        #actions["0"] = euler_agent.calculate_action(obs["0"])
+        #actions["1"] = items_agent.calculate_action(obs["1"])
+        #actions["2"] = items_agent1.calculate_action(obs["2"])
+        #actions["3"] = median_agent.calculate_action(obs["3"])
         
         actions = {}
         actions["0"] = euler_agent.calculate_action(obs["0"])
         actions["1"] = items_agent.calculate_action(obs["1"])
-        actions["2"] = items_agent1.calculate_action(obs["2"])
-        actions["3"] = median_agent.calculate_action(obs["3"])
-        actions["4"] = None
 
         # Step the environment with actions
         obs, reward, terminated, truncated, info = env.step(actions)
