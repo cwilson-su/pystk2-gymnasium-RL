@@ -112,8 +112,43 @@ ExpertBot domine. ItemAgent (Euler) est le plus compétitif face au bot expert. 
 
 ### 3. Concernant les modifications apportée au rapport finale
 
+Il a fallu modifier le **Mid Semester Report** pour aboutir à la version **Final Report**. Ce n'est qu'un draft pour l'instant.
 
+#### 1 . Changement de l'intoduction 
 
+* Dans l’**Abstract**, la portée a été élargie : on mentionne désormais explicitement l’**ItemsAgent**, l’usage de *pystk2* et des visualisations Plotly, ainsi que la perspective d’intégrer du **reinforcement learning** après le projet.
+
+* L’intro met désormais en exergue l’abandon du *StayInTheMiddleAgent* au profit du **MedianAgent** comme premier agent “solide”, et présente d’entrée de jeu les trois agents actuellement maintenus (*MedianAgent*, *EulerAgent*, *ItemsAgent*).
+
+* Le lien avec les visualisations et la roadmap est posé dès cette section, alors que dans le draft intermédiaire ces éléments n’étaient évoqués qu’en fin de document.
+
+#### 2 . Ajout de la section **Glossary** comparé au rapport intermédiare
+
+* Une section autonome **Glossary** (section 2) a été insérée juste après l’introduction pour définir les termes clés : *Acceleration Logic*, *n‑th Node*, *Peripheral Vision*, etc. Elle n’existait pas dans le rapport intermédiaire et clarifie le jargon avant d’entrer dans l’analyse détaillée.
+
+#### 3 . Extension de **Analysis of Provided Scripts**
+
+* La section a été subdivisée en sous‑sections plus fines : `__init__.py`, `definitions.py`, `envs.py`, etc., chacune décrivant classes, algorithmes et API internes (ex. **Phase Enum**, **STKAction Class**, reward shaping, etc.).
+* Des algorithmes clés (e.g., *Global‑to‑Kart Coordinate Conversion*, *Sorting Karts and Items by Distance*) sont maintenant explicités pseudo‑code à l’appui .
+
+#### 4 . Création de la section **Technical Data Sheets and Analysis** consolidée
+
+* Dans l’intermédiaire, chaque fiche technique était reléguée en annexe ; elles sont à présent centralisées dans une section principale, avec rappels synthétiques avant de renvoyer vers les annexes détaillées.
+* Pour **EulerAgent**, on ajoute une sous‑partie *Mathematical Models and Formulas* (courbure, vitesse limite, Fresnel integrals, etc.) directement dérivée de la littérature MIT ; ces équations n’apparaissaient pas auparavant.
+
+#### 5 . Enrichissement de **Additional Utilities**
+
+* La partie sur **TrackUtils** / **TrackPathWrapper** est reprise mais complétée par l’algorithme *Selecting the Node to Target* (Algorithm 4) et des captures illustratives. Cela répond à la critique “visualisation insuffisante” du mid‑term.
+
+#### 6 . Nouvelle sous‑section **Future Agents**
+
+* Au lieu d’un simple “Future Works”, le final détaille **Future Agents** : stratégie de combinaison dynamique entre agents existants et plan d’intégration du RL (reward function design, exploration strategy).
+
+#### 7 . Documentation exhaustive de l’API `env.unwrapped`
+
+* Un tableau très complet listant méthodes et rôles (de `reset()` à `warmup_race()`) apparaît en annexe ; il sert de référence rapide au jury et n’était pas inclus dans la version précédente.
+
+-> Toutes ces modifications ne sont peut-etre pas apportées tout de suite dans la version proposée pour cette réunion, mais c'est un début. 
 
 ---
 
@@ -140,5 +175,5 @@ Enfin, nous prévoyons de compléter le GitHub avec les informations qui nous ma
 
 ---
 
-**Rapport rédigé par :** Mahmoud, Safa  
-**Vérifié par :** Badr, Wilson  
+**Rapport rédigé par :** Mahmoud
+**Vérifié par :** Badr, Wilson, Safa  
