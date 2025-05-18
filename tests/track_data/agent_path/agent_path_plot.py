@@ -5,7 +5,7 @@ import os
 import csv
 import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..", "src")))
-from pystk2_gymnasium import AgentSpec
+from pystk2_gymnasium.envs import AgentSpec
 from utils.TrackUtils import TrackVisualizer  
 
 # Set output folder

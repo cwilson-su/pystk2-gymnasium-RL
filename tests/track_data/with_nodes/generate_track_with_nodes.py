@@ -4,7 +4,7 @@ import os
 import csv
 import pandas as pd
 import plotly.graph_objects as go
-from pystk2_gymnasium import AgentSpec
+from pystk2_gymnasium.envs import AgentSpec
 
 # Set up directories
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..","..", "records_csv","track_data"))

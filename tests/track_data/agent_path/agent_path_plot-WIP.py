@@ -4,7 +4,7 @@ import os
 import csv
 import pandas as pd
 import plotly.graph_objects as go
-from pystk2_gymnasium import AgentSpec
+from pystk2_gymnasium.envs import AgentSpec
 from pystk2_gymnasium.utils import rotate  
 
 # Set output folder

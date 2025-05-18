@@ -1,6 +1,5 @@
 import gymnasium as gym
 import numpy as np
-from pystk2_gymnasium import AgentSpec
 import os
 import csv
 import sys

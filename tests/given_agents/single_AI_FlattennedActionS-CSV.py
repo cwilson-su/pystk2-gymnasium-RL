@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from csvRW import setup_output, write_csv_header, write_to_csv 
 import gymnasium as gym
 import numpy as np
-from pystk2_gymnasium import AgentSpec
+from pystk2_gymnasium.envs import AgentSpec
 
 # Set up CSV file
 csv_base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "records_csv","given_agents"))

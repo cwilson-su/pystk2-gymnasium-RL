@@ -1,5 +1,5 @@
 import gymnasium as gym
-from pystk2_gymnasium import AgentSpec
+from pystk2_gymnasium.envs import AgentSpec
 import sys
 import os
 import numpy as np

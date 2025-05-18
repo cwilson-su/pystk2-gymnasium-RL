@@ -2,7 +2,7 @@ import sys
 import os
 import gymnasium as gym
 import numpy as np
-from pystk2_gymnasium import AgentSpec
+from pystk2_gymnasium.envs import AgentSpec
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "utils"))) 
 from csvRW import setup_output, write_csv_header, write_to_csv 
 
