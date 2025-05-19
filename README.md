@@ -7,13 +7,23 @@ Read the [Changelog](./CHANGELOG.md)
 
 ## Install
 
-The PySuperKart2 gymnasium wrapper is a Python package, so installing is fairly
-easy
+Download the code un-zip it and proceed as written below or use the http link to clone it in your IDE and proceed as below.
+
+The PySuperKart2 gymnasium wrapper is a Python package, so installing it is fairly easy
+
+`pip install plotly`
+
+`pip install numpy`
 
 `pip install pystk2-gymnasium`
 
-Note that during the first run, SuperTuxKart assets are downloaded in the cache
-directory.
+then use : 
+
+`pip uninstall pystk2-gymnasium`
+
+that will download the needed packages without using the `pystk2-gymnasium` package, the package is already in the project and having it twice may cause you trouble.
+
+if `pip install pystk2-gymnasium` doesn't work, try using `pip install pystk2-gymnasium --break-system-packages`
 
 ## AgentSpec
 
@@ -217,3 +227,13 @@ if __name__ == '__main__':
   # Important to stop the STK process
   env.close()
 ```
+
+
+## Project Structure
+
+this project is composed of multiple differents repositories that have differents purposes. the `logs` repository contains the weekly reports and the `reports` repository contains the mid semester and final reports of our project.
+
+there are 2 main repos:
+The first one is `src`. it contains all the agents and the necessary files to run the project.
+The seconde one is `test`, it contains all the file to test the agents, in the `custom_agents` repo you can find all the tests that run the agents against eachother or against the built-in agent of the game.
+`given_agents` contains the file to make graphs of different variable that we thought were relevant to plot.

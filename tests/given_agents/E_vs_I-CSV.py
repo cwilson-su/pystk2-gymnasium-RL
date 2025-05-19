@@ -35,7 +35,7 @@ if __name__ == '__main__':
     ]
 
     # Create the multi-agent environment for N karts.
-    env = STKRaceMultiEnv(agents=agents_specs, track="fortmagma", render_mode="human", num_kart=2, difficulty=1)
+    env = STKRaceMultiEnv(agents=agents_specs, track="scotland", render_mode="human", num_kart=2, difficulty=1)
 
     # Instantiate the agents.
     # Agent 0: EulerAgent wraps a fresh MedianAgent.
@@ -51,6 +51,7 @@ if __name__ == '__main__':
     # Reset the environment
     obs, _ = env.reset()
     write_to_csv(csv_file_Track_Name, env.current_track)
+    
 
     print("Track Name:", env.current_track)
 
