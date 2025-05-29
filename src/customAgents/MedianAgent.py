@@ -9,7 +9,7 @@ class MedianAgent:
         self.obs = None
         self.isEnd = False
         self.threshold = 40
-        print(self.env.current_track)
+        #print(self.env.current_track)
         
 
     def reset(self):

@@ -8,6 +8,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.
 from pystk2_gymnasium.envs import AgentSpec
 from utils.TrackUtils import TrackVisualizer  
 
+from customAgents.MedianAgent import MedianAgent
+from customAgents.EulerAgent import EulerAgent
+from customAgents.ItemsAgent import ItemsAgent
+from pystk2_gymnasium.envs import STKRaceMultiEnv, AgentSpec
+
 # Set output folder
 current_dir = os.path.dirname(os.path.abspath(__file__))  
 output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_graph", "agent_path"))
@@ -19,8 +24,10 @@ track_nodes_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__f
 agent_path_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "records_csv", "agent_path")), f"{track_name}_agent_path.csv")
 
 # Initialize environment
-agent = AgentSpec(name="Player", use_ai=True)
-env = gym.make("supertuxkart/full-v0", render_mode="human", agent=agent, track=track_name)
+#agent = AgentSpec(name="Player", use_ai=True)
+theAgent = AgentSpec(name="Euler", rank_start=0, use_ai=False)
+env = gym.make("supertuxkart/full-v0", render_mode="human", agent=theAgent, track=track_name)
+agent = EulerAgent(MedianAgent(env, path_lookahead=2))
 obs, _ = env.reset()
 
 # Save track paths to CSV
@@ -55,7 +62,8 @@ with open(agent_path_file, "w", newline="") as file:
     agent_positions = []
 
     while not done:
-        action = env.action_space.sample()
+        #action = env.action_space.sample()
+        action = agent.calculate_action(obs)  # Use the EulerAgent to calculate the action
         obs, _, terminated, truncated, _ = env.step(action)
         agent_abs_pos = np.array(env.unwrapped.world.karts[0].location)
 

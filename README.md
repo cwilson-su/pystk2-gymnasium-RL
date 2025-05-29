@@ -11,19 +11,7 @@ Download the code un-zip it and proceed as written below or use the http link to
 
 The PySuperKart2 gymnasium wrapper is a Python package, so installing it is fairly easy
 
-`pip install plotly`
-
-`pip install numpy`
-
-`pip install pystk2-gymnasium`
-
-then use : 
-
-`pip uninstall pystk2-gymnasium`
-
-that will download the needed packages without using the `pystk2-gymnasium` package, the package is already in the project and having it twice may cause you trouble.
-
-if `pip install pystk2-gymnasium` doesn't work, try using `pip install pystk2-gymnasium --break-system-packages`
+`pip install -r requirement.txt`
 
 ## Project Structure
 

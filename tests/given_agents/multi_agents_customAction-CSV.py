@@ -33,7 +33,7 @@ if __name__ == '__main__':
     ]
 
     # Create the multi-agent environment for N karts.
-    env = STKRaceMultiEnv(agents=agents_specs, track="fortmagma", render_mode="human", num_kart=5, difficulty=1)
+    env = STKRaceMultiEnv(agents=agents_specs, track="stk_enterprise", render_mode="human", num_kart=5, difficulty=1)
 
     # Instantiate the agents.
     # Agent 0: EulerAgent wraps a fresh MedianAgent.
