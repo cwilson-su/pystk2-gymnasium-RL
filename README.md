@@ -13,6 +13,8 @@ The PySuperKart2 gymnasium wrapper is a Python package, so installing it is fair
 
 `pip install -r requirement.txt`
 
+in the root of the project
+
 ## Project Structure
 
 This project is composed of multiple repositories, each serving a different purpose:
