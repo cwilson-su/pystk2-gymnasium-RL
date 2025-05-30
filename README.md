@@ -15,6 +15,12 @@ The PySuperKart2 gymnasium wrapper is a Python package, so installing it is fair
 
 in the root of the project
 
+## launch a simulation
+
+to launch a simulation, you just need to write this line in the terminal:
+
+`(path from the root directory to the Python file) (path from the root directory to the file to execute)`
+
 ## Project Structure
 
 This project is composed of multiple repositories, each serving a different purpose:
