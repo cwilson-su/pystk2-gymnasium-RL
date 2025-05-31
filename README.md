@@ -17,9 +17,26 @@ in the root of the project
 
 ## launch a simulation
 
-to launch a simulation, you just need to write this line in the terminal:
+To launch a simulation, you just need to be in the `test` directory of the project:
 
-`(path from the root directory to the Python file) (path from the root directory to the file to execute)`
+The `test` directory contains executable scripts used to run and analyze agents in various contexts. It is organized into three main subdirectories:
+
+- **`custom_agent/`**  
+  Used to run the custom agents developed in this project. This folder allows direct testing of agent behavior in races.
+  
+- **`given_agent/`**  
+  Contains scripts for generating CSV files and visual graphs of agent performance metrics.  
+  The term `AI` in filenames refers to the use of SuperTuxKart’s built-in agents.  
+  To launch a visualization, simply execute the `GRAPH` file — it will automatically run the associated CSV script. No additional steps are required.
+  
+- **`track_data/`**  
+  Provides tools for track visualization. In particular, the `agent_path_plot` script generates a 3D graph showing the trajectory followed by an agent during a race.
+
+To run a script, make sure you're in the appropriate folder and execute it as usual:
+```bash
+python3 file_name.py
+```
+The scripts do not require any parameters.
 
 ## Project Structure
 
